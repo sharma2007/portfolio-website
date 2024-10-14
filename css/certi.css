@@ -1,0 +1,20 @@
+.certificate-card {
+    border: 1px solid #ccc; /* Add a border for card effect */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Padding inside the card */
+    margin-bottom: 30px; /* Spacing between cards */
+    transition: box-shadow 0.3s; /* Smooth shadow transition */
+}
+
+.certificate-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Shadow effect on hover */
+}
+
+.certificate-image-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+    color: #666;
+}
