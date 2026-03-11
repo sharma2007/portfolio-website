@@ -26,6 +26,7 @@ export default function LoginPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!supabase) return;
     setMessage(null);
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -40,6 +41,7 @@ export default function LoginPage() {
 
   async function handleSignUp(e: React.FormEvent) {
     e.preventDefault();
+    if (!supabase) return;
     setMessage(null);
     setLoading(true);
     const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/auth/callback` } });
