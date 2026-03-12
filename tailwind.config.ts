@@ -19,6 +19,7 @@ const config: Config = {
         muted: "var(--color-muted)",
         accent: "var(--color-accent)",
         accentDim: "var(--color-accent-dim)",
+        timelineLine: "var(--color-timeline-line)",
       },
       animation: {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
