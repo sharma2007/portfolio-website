@@ -9,7 +9,7 @@ const STACK = [
     items: [
       { name: "Python", slug: "python" },
       { name: "C++", slug: "cplusplus" },
-      { name: "Java", slug: "openjdk" },
+      { name: "Java", iconUrl: "https://www.svgrepo.com/svg/452234/java" },
       { name: "JavaScript", slug: "javascript" },
       { name: "TypeScript", slug: "typescript" },
     ],
@@ -20,14 +20,14 @@ const STACK = [
       { name: "Ultralytics YOLOv8", custom: "yolov8" },
       { name: "TensorFlow", slug: "tensorflow" },
       { name: "scikit-learn", slug: "scikitlearn" },
-      { name: "n8n", slug: "n8n" },
+      { name: "n8n", slug: "n8n", color: "EA4B71" },
     ],
   },
   {
     category: "Web",
     items: [
       { name: "React", slug: "react" },
-      { name: "Next.js", slug: "nextdotjs" },
+      { name: "Next.js", slug: "nextdotjs", color: "ffffff" },
       { name: "Node.js", slug: "nodedotjs" },
       { name: "HTML/CSS", slug: "html5" },
     ],
@@ -52,15 +52,23 @@ function TechItem({
   name,
   slug,
   custom,
+  iconUrl,
+  color,
   index,
   inView,
 }: {
   name: string;
   slug?: string;
   custom?: string;
+  iconUrl?: string;
+  color?: string;
   index: number;
   inView: boolean;
 }) {
+  const cdnSrc = slug ? (color ? `${ICON_BASE}/${slug}/${color}` : `${ICON_BASE}/${slug}`) : null;
+  const imgSrc = iconUrl ?? (custom === "yolov8" ? ULTRALYTICS_AVATAR : cdnSrc);
+  const isYolov8 = custom === "yolov8";
+
   return (
     <div
       className="flex flex-col items-center gap-1 transition-opacity duration-300"
@@ -74,18 +82,11 @@ function TechItem({
       }}
     >
       <div className="tech-stack-icon flex h-9 w-9 flex-shrink-0 items-center justify-center">
-        {custom === "yolov8" && (
+        {imgSrc && (
           <img
-            src={ULTRALYTICS_AVATAR}
+            src={imgSrc}
             alt=""
-            className="h-6 w-6 rounded-sm object-contain transition-[filter,opacity] duration-200 group-hover:brightness-110 group-hover:saturate-150"
-          />
-        )}
-        {slug && (
-          <img
-            src={`${ICON_BASE}/${slug}`}
-            alt=""
-            className="h-6 w-6 object-contain transition-[filter,opacity] duration-200 group-hover:brightness-110 group-hover:saturate-150"
+            className={`h-6 w-6 object-contain transition-[filter,opacity] duration-200 group-hover:brightness-110 group-hover:saturate-150 ${isYolov8 ? "rounded-sm" : ""}`}
           />
         )}
       </div>
@@ -137,7 +138,7 @@ export default function TechStack() {
             <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
               {group.category}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
               {group.items.map((item) => (
                 <div
                   key={item.name}
@@ -147,6 +148,8 @@ export default function TechStack() {
                     name={item.name}
                     slug={"slug" in item ? item.slug : undefined}
                     custom={"custom" in item ? item.custom : undefined}
+                    iconUrl={"iconUrl" in item ? item.iconUrl : undefined}
+                    color={"color" in item ? item.color : undefined}
                     index={staggerIndex++}
                     inView={inView}
                   />
