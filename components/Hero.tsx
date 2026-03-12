@@ -57,11 +57,7 @@ export default function Hero() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full overflow-hidden mb-8 border-4 border-accent/50 avatar-ring"
         >
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="relative w-full h-full"
-          >
+          <div className="relative w-full h-full">
             <Image
               src="/images/user.avif"
               alt="Soham Sharma"
@@ -70,7 +66,7 @@ export default function Hero() {
               priority
               sizes="(max-width: 640px) 176px, 208px"
             />
-          </motion.div>
+          </div>
         </motion.div>
 
         <motion.h1
