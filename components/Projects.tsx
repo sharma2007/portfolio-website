@@ -3,13 +3,11 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Tilt from "react-parallax-tilt";
 import { useResume } from "@/context/ResumeContext";
 import { useAuth } from "@/context/AuthContext";
 import type { Project } from "@/lib/types";
 import AdminButtons from "./AdminButtons";
 import Modal from "./Modal";
-import SectionWrapper from "./SectionWrapper";
 
 function getBentoClass(i: number) {
   if (i === 0) return "md:col-span-2 md:row-span-2 min-h-[280px]";
@@ -25,7 +23,14 @@ export default function Projects() {
   const canEdit = isAdmin && isSupabase;
 
   return (
-    <SectionWrapper id="projects" className="mb-24 scroll-mt-24">
+    <motion.section
+      id="projects"
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5 }}
+      className="mb-24 scroll-mt-24"
+    >
       <div className="flex items-center justify-between gap-4 mb-4">
         <h2 className="font-display font-bold text-3xl sm:text-4xl text-text tracking-tight">Projects</h2>
         {canEdit && (
@@ -36,86 +41,56 @@ export default function Projects() {
       </div>
       <p className="text-muted text-lg mb-12">Technology and creativity in action.</p>
 
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:auto-rows-[220px]"
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={{
-          hidden: {},
-          show: { transition: { staggerChildren: 0.08 } },
-        }}
-      >
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:auto-rows-[220px]">
         {projects.map((proj, i) => (
-          <motion.div
+          <motion.article
             key={proj.id}
-            variants={{
-              hidden: { opacity: 0, y: 40 },
-              show: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-              },
-            }}
-            className={getBentoClass(i)}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.05, duration: 0.4 }}
+            className={`group relative rounded-2xl overflow-hidden border border-white/10 bg-surface ${getBentoClass(i)} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/5 hover:border-accent/20`}
           >
-            <Tilt
-              tiltMaxAngleX={8}
-              tiltMaxAngleY={8}
-              glareEnable
-              glareMaxOpacity={0.08}
-              glareColor="#8b5cf6"
-              scale={1.02}
-              transitionSpeed={400}
-              className="h-full"
-            >
-              <article className="group relative h-full rounded-2xl overflow-hidden glass border border-white/10 hover:border-purple-500/30 transition-all duration-300 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-purple-500/50 before:to-transparent before:z-10">
-                <div className="absolute inset-0">
-                  <Image src={proj.img} alt={proj.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" unoptimized />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+            <div className="absolute inset-0">
+              <Image src={proj.img} alt={proj.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" unoptimized />
+              {/* Strong gradient so text is readable on any image */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
+            </div>
+            <div className="absolute inset-0 p-5 flex flex-col justify-end">
+              {canEdit && (
+                <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <AdminButtons
+                    onEdit={() => setModal({ open: true, item: proj })}
+                    onDelete={() => window.confirm("Delete this project?") && deleteProject(proj.id)}
+                  />
                 </div>
-                <div className="absolute inset-0 p-5 flex flex-col justify-end">
-                  {canEdit && (
-                    <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <AdminButtons
-                        onEdit={() => setModal({ open: true, item: proj })}
-                        onDelete={() => window.confirm("Delete this project?") && deleteProject(proj.id)}
-                      />
-                    </div>
-                  )}
-                  <span className="text-accent text-xs font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.date}</span>
-                  <h3 className="font-display font-semibold text-lg text-white mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-                    {proj.link ? (
-                      <a href={proj.link} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors duration-300">
-                        {proj.title}
-                      </a>
-                    ) : (
-                      proj.title
-                    )}
-                  </h3>
-                  {proj.subtitle && <p className="text-white/90 text-sm mt-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.subtitle}</p>}
-                  <div className="flex flex-wrap gap-1.5 mt-2">
-                    <span className="glass text-xs px-2 py-0.5 rounded-full text-white/80">Project</span>
-                  </div>
-                  <div className="absolute inset-x-0 bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/95 via-black/70 to-transparent translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out flex flex-col gap-2">
-                    <p className="text-white/90 text-sm line-clamp-2">{proj.desc}</p>
-                    {proj.cta && proj.ctaHref && (
-                      <a
-                        href={proj.ctaHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-accent font-medium text-sm hover:gap-2 transition-all duration-300"
-                      >
-                        {proj.cta} <i className="icon-arrow-right22" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </article>
-            </Tilt>
-          </motion.div>
+              )}
+              <span className="text-accent text-xs font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.date}</span>
+              <h3 className="font-display font-semibold text-lg text-white mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+                {proj.link ? (
+                  <a href={proj.link} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors duration-300">
+                    {proj.title}
+                  </a>
+                ) : (
+                  proj.title
+                )}
+              </h3>
+              {proj.subtitle && <p className="text-white/90 text-sm mt-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.subtitle}</p>}
+              <p className="text-white/85 text-sm mt-2 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.desc}</p>
+              {proj.cta && proj.ctaHref && (
+                <a
+                  href={proj.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-accent font-medium text-sm mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:gap-2"
+                >
+                  {proj.cta} <i className="icon-arrow-right22" />
+                </a>
+              )}
+            </div>
+          </motion.article>
         ))}
-      </motion.div>
+      </div>
 
       <Modal open={modal.open} onClose={() => setModal({ open: false, item: null })} title={modal.item ? "Edit project" : "Add project"}>
         <ProjectForm
@@ -128,7 +103,7 @@ export default function Projects() {
           onCancel={() => setModal({ open: false, item: null })}
         />
       </Modal>
-    </SectionWrapper>
+    </motion.section>
   );
 }
 

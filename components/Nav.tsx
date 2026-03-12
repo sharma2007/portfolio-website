@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
@@ -8,50 +8,13 @@ import { useTheme } from "@/context/ThemeContext";
 
 const SECTIONS = [
   { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
   { id: "resume", label: "Resume" },
   { id: "projects", label: "Projects" },
   { id: "awards", label: "Awards" },
   { id: "camps", label: "Camps" },
   { id: "certifications", label: "Certs" },
   { id: "languages", label: "Languages" },
-  { id: "contact", label: "Contact" },
 ];
-
-function MagneticCTA({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const deltaX = (e.clientX - centerX) / rect.width;
-    const deltaY = (e.clientY - centerY) / rect.height;
-    setOffset({
-      x: Math.max(-6, Math.min(6, deltaX * 12)),
-      y: Math.max(-6, Math.min(6, deltaY * 12)),
-    });
-  };
-
-  const handleMouseLeave = () => setOffset({ x: 0, y: 0 });
-
-  return (
-    <div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className={className}
-      style={{
-        transform: `translate(${offset.x}px, ${offset.y}px)`,
-        transition: "transform 0.2s ease-out",
-      }}
-    >
-      {children}
-    </div>
-  );
-}
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -61,7 +24,7 @@ export default function Nav() {
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -88,13 +51,13 @@ export default function Nav() {
   return (
     <>
       <motion.nav
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.4 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-black/60 backdrop-blur-xl border-b border-white/[0.06] shadow-lg shadow-black/20"
-            : "bg-transparent border-b border-transparent"
+            ? "bg-bg/80 backdrop-blur-xl border-b border-white/5 shadow-lg"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -106,19 +69,17 @@ export default function Nav() {
           </Link>
           <div className="hidden md:flex items-center gap-1">
             {SECTIONS.map((s) => (
-              <div key={s.id} className="relative group">
-                <Link
-                  href={`#${s.id}`}
-                  className={`relative block px-3 py-2 rounded-lg text-sm transition-all duration-300 ${
-                    activeId === s.id
-                      ? "text-accent bg-accentDim"
-                      : "text-muted hover:text-text hover:bg-white/5"
-                  }`}
-                >
-                  {s.label}
-                  <span className="absolute bottom-0 left-0 h-px w-0 bg-purple-400 transition-all duration-300 group-hover:w-full rounded-full" />
-                </Link>
-              </div>
+              <Link
+                key={s.id}
+                href={`#${s.id}`}
+                className={`px-3 py-2 rounded-lg text-sm transition-all duration-300 ${
+                  activeId === s.id
+                    ? "text-accent bg-accentDim"
+                    : "text-muted hover:text-text hover:bg-white/5"
+                }`}
+              >
+                {s.label}
+              </Link>
             ))}
             <button
               type="button"
@@ -137,14 +98,12 @@ export default function Nav() {
               )}
             </button>
             {!user && (
-              <MagneticCTA className="ml-2">
-                <Link
-                  href="/login"
-                  className="block px-4 py-2 rounded-lg text-sm font-medium bg-purple-600/80 text-white hover:bg-purple-500/90 transition-all duration-300"
-                >
-                  Log in
-                </Link>
-              </MagneticCTA>
+              <Link
+                href="/login"
+                className="ml-2 px-3 py-2 rounded-lg text-sm text-muted hover:text-text hover:bg-white/5 transition-all duration-300"
+              >
+                Log in
+              </Link>
             )}
           </div>
           <button
@@ -163,11 +122,10 @@ export default function Nav() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "100vh" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed inset-0 z-40 overflow-hidden bg-bg/98 backdrop-blur-xl md:hidden flex flex-col items-center justify-center gap-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-40 bg-bg/98 backdrop-blur-xl md:hidden flex flex-col items-center justify-center gap-6"
             onClick={() => setOpen(false)}
           >
             {SECTIONS.map((s) => (

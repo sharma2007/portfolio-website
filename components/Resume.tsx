@@ -7,7 +7,6 @@ import { useAuth } from "@/context/AuthContext";
 import type { Experience, Education } from "@/lib/types";
 import AdminButtons from "./AdminButtons";
 import Modal from "./Modal";
-import SectionWrapper from "./SectionWrapper";
 
 export default function Resume() {
   const { user, isAdmin } = useAuth();
@@ -29,7 +28,14 @@ export default function Resume() {
   const canEdit = isAdmin && isSupabase;
 
   return (
-    <SectionWrapper id="resume" className="mb-24 scroll-mt-24">
+    <motion.section
+      id="resume"
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.5 }}
+      className="mb-24 scroll-mt-24"
+    >
       <h2 className="font-display font-bold text-3xl sm:text-4xl text-text mb-12 tracking-tight">
         Resume
       </h2>
@@ -49,20 +55,13 @@ export default function Resume() {
       </div>
 
       <div className="relative">
-        <motion.div
-          className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-timelineLine -translate-x-px origin-top"
-          initial={{ scaleY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformOrigin: "top" }}
-        />
+        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-timelineLine -translate-x-px" />
         {experiences.map((item, i) => {
           const isLeft = i % 2 === 0;
           return (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
+              initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
@@ -76,7 +75,7 @@ export default function Resume() {
                   isLeft ? "md:pr-12 md:text-right" : "md:pl-12 md:text-left"
                 }`}
               >
-                <div className="relative group rounded-xl glass p-6 hover:border-purple-500/30 transition-all duration-300 cta-glow">
+                <div className="relative group rounded-xl border border-white/10 bg-surface p-6 hover:border-accent/30 transition-all duration-300 cta-glow">
                   {canEdit && (
                     <div className={`absolute top-3 opacity-0 group-hover:opacity-100 transition-opacity ${isLeft ? "left-3 md:right-3 md:left-auto" : "right-3"}`}>
                       <AdminButtons
@@ -111,20 +110,13 @@ export default function Resume() {
       </div>
 
       <div className="relative">
-        <motion.div
-          className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-timelineLine -translate-x-px origin-top"
-          initial={{ scaleY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{ transformOrigin: "top" }}
-        />
+        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-timelineLine -translate-x-px" />
         {education.map((item, i) => {
           const isLeft = i % 2 === 0;
           return (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, x: isLeft ? -30 : 30 }}
+              initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
@@ -138,7 +130,7 @@ export default function Resume() {
                   isLeft ? "md:pr-12 md:text-right" : "md:pl-12 md:text-left"
                 }`}
               >
-                <div className="relative group rounded-xl glass p-6 hover:border-purple-500/30 transition-all duration-300 cta-glow">
+                <div className="relative group rounded-xl border border-white/10 bg-surface p-6 hover:border-accent/30 transition-all duration-300 cta-glow">
                   {canEdit && (
                     <div className={`absolute top-3 opacity-0 group-hover:opacity-100 transition-opacity ${isLeft ? "left-3 md:right-3 md:left-auto" : "right-3"}`}>
                       <AdminButtons
@@ -180,7 +172,7 @@ export default function Resume() {
           onCancel={() => setEduModal({ open: false, item: null })}
         />
       </Modal>
-    </SectionWrapper>
+    </motion.section>
   );
 }
 
