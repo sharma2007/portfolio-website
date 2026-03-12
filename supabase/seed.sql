@@ -36,8 +36,8 @@ insert into public.awards (title, sub, img, alt, sort_order) values
 
 -- Certifications
 insert into public.certifications (title, meta, img, alt, skills, sort_order) values
-  ('Learn Intermediate C++ Course', 'Codecademy – July 2025', '/images/certifications/Learn%20Intermediate%20C++%20Course.avif', 'Intermediate C++', 'Variable Scope & Storage Classes · Memory Management · Encapsulation · Inheritance · Polymorphism · Abstraction', 0),
-  ('Learn C++ Course', 'Codecademy – July 2025', '/images/certifications/Learn%20C++%20Course.avif', 'C++', 'Variables · Conditionals & Logic · Loops · Vectors · Functions', 1),
+  ('Learn Intermediate C++ Course', 'Codecademy – July 2025', '/images/certifications/Learn_Intermediate_Cpp_Course.avif', 'Intermediate C++', 'Variable Scope & Storage Classes · Memory Management · Encapsulation · Inheritance · Polymorphism · Abstraction', 0),
+  ('Learn C++ Course', 'Codecademy – July 2025', '/images/certifications/Learn_Cpp_Course.avif', 'C++', 'Variables · Conditionals & Logic · Loops · Vectors · Functions', 1),
   ('Learn Python & Ethical Hacking From Scratch', 'zSecurity – July 2023', '/images/certifications/p_h.avif', 'Python & Ethical Hacking', null, 2),
   ('Introduction to Quantum Computing', 'The Coding School – April 2023', '/images/certifications/quantum.avif', 'Quantum Computing', null, 3),
   ('The Complete Java Development Bootcamp', 'Udemy – May 2022', '/images/certifications/java.avif', 'Java Bootcamp', null, 4),

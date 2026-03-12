@@ -53,7 +53,8 @@ export default function Projects() {
           >
             <div className="absolute inset-0">
               <Image src={proj.img} alt={proj.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" unoptimized />
-              <div className="absolute inset-0 bg-gradient-to-t from-bg/95 via-bg/40 to-transparent" />
+              {/* Strong gradient so text is readable on any image */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/30" />
             </div>
             <div className="absolute inset-0 p-5 flex flex-col justify-end">
               {canEdit && (
@@ -64,8 +65,8 @@ export default function Projects() {
                   />
                 </div>
               )}
-              <span className="text-accent/90 text-xs font-medium">{proj.date}</span>
-              <h3 className="font-display font-semibold text-lg text-text mt-0.5">
+              <span className="text-accent text-xs font-medium drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.date}</span>
+              <h3 className="font-display font-semibold text-lg text-white mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
                 {proj.link ? (
                   <a href={proj.link} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors duration-300">
                     {proj.title}
@@ -74,8 +75,8 @@ export default function Projects() {
                   proj.title
                 )}
               </h3>
-              {proj.subtitle && <p className="text-muted text-sm mt-0.5">{proj.subtitle}</p>}
-              <p className="text-muted text-sm mt-2 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{proj.desc}</p>
+              {proj.subtitle && <p className="text-white/90 text-sm mt-0.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.subtitle}</p>}
+              <p className="text-white/85 text-sm mt-2 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">{proj.desc}</p>
               {proj.cta && proj.ctaHref && (
                 <a
                   href={proj.ctaHref}

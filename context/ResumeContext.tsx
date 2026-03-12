@@ -132,12 +132,17 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         ctaHref: (r.cta_href as string) ?? (r.ctaHref as string) ?? null,
       });
 
+      const certList = cert.data ?? [];
+      const certificationsMapped = certList.length > 0
+        ? certList.map((r) => ({ id: r.id, title: r.title, meta: r.meta, img: r.img, alt: r.alt, skills: r.skills }))
+        : DEFAULT_CERTIFICATIONS.map((c, idx) => ({ ...c, id: `default-cert-${idx}` }));
+
       setData({
         experiences: (exp.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body })),
         education: (edu.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body })),
         projects: (proj.data ?? []).map((r) => mapProj(r)),
         awards: (awd.data ?? []).map((r) => ({ id: r.id, title: r.title, sub: r.sub, img: r.img, alt: r.alt })),
-        certifications: (cert.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, img: r.img, alt: r.alt, skills: r.skills })),
+        certifications: certificationsMapped,
         camps: (camp.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body, img: r.img, alt: r.alt, flip: r.flip })),
         languages: (lang.data ?? []).map((r) => ({ id: r.id, name: r.name, level: r.level, fill: r.fill })),
       });

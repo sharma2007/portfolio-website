@@ -34,8 +34,8 @@ export const DEFAULT_AWARDS: Award[] = [
 ];
 
 export const DEFAULT_CERTIFICATIONS: Certification[] = [
-  { title: "Learn Intermediate C++ Course", meta: "Codecademy – July 2025", img: "/images/certifications/Learn%20Intermediate%20C++%20Course.avif", alt: "Intermediate C++", skills: "Variable Scope & Storage Classes · Memory Management · Encapsulation · Inheritance · Polymorphism · Abstraction" },
-  { title: "Learn C++ Course", meta: "Codecademy – July 2025", img: "/images/certifications/Learn%20C++%20Course.avif", alt: "C++", skills: "Variables · Conditionals & Logic · Loops · Vectors · Functions" },
+  { title: "Learn Intermediate C++ Course", meta: "Codecademy – July 2025", img: "/images/certifications/Learn_Intermediate_Cpp_Course.avif", alt: "Intermediate C++", skills: "Variable Scope & Storage Classes · Memory Management · Encapsulation · Inheritance · Polymorphism · Abstraction" },
+  { title: "Learn C++ Course", meta: "Codecademy – July 2025", img: "/images/certifications/Learn_Cpp_Course.avif", alt: "C++", skills: "Variables · Conditionals & Logic · Loops · Vectors · Functions" },
   { title: "Learn Python & Ethical Hacking From Scratch", meta: "zSecurity – July 2023", img: "/images/certifications/p_h.avif", alt: "Python & Ethical Hacking", skills: null },
   { title: "Introduction to Quantum Computing", meta: "The Coding School – April 2023", img: "/images/certifications/quantum.avif", alt: "Quantum Computing", skills: null },
   { title: "The Complete Java Development Bootcamp", meta: "Udemy – May 2022", img: "/images/certifications/java.avif", alt: "Java Bootcamp", skills: null },
