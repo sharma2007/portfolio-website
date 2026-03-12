@@ -11,6 +11,7 @@
   --color-accent-dim: rgba(0, 212, 255, 0.15);
   --color-timeline-line: rgba(255, 255, 255, 0.25);
   --color-cursor-ring: rgba(0, 212, 255, 0.4);
+  --glow: 139, 92, 246;
 }
 
 [data-theme="light"] {
@@ -26,6 +27,50 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.3);
+  color: white;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glow-text {
+  background: linear-gradient(135deg, #fff 0%, #c4b5fd 50%, #93c5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes orb-drift-1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(40px, -30px); }
+}
+
+@keyframes orb-drift-2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-35px, 35px); }
 }
 
 body {

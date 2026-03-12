@@ -9,8 +9,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-syne)", "var(--font-dm-sans)", "sans-serif"],
+        sans: ["var(--font-inter)", "sans-serif"],
+        display: ["var(--font-outfit)", "sans-serif"],
       },
       colors: {
         bg: "var(--color-bg)",
@@ -23,17 +23,22 @@ const config: Config = {
         cursorRing: "var(--color-cursor-ring)",
       },
       animation: {
-        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         float: "float 4s ease-in-out infinite",
+        shimmer: "shimmer 2.5s linear infinite",
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
       },
       keyframes: {
-        "glow-pulse": {
-          "0%, 100%": { opacity: "1", boxShadow: "0 0 20px var(--color-accent)" },
-          "50%": { opacity: "0.8", boxShadow: "0 0 32px var(--color-accent)" },
-        },
         float: {
           "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-8px)" },
+          "50%": { transform: "translateY(-12px)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% center" },
+          "100%": { backgroundPosition: "200% center" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { boxShadow: "0 0 12px rgba(139,92,246,0.3)" },
+          "50%": { boxShadow: "0 0 28px rgba(139,92,246,0.6)" },
         },
       },
       backgroundImage: {
