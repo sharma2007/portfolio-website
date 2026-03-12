@@ -99,6 +99,11 @@ body::before {
   box-shadow: 0 0 24px var(--color-accent-dim), 0 0 48px rgba(0, 212, 255, 0.1);
 }
 
+/* Tech stack: darken CDN icons in light theme so they match muted text */
+[data-theme="light"] .tech-stack-icon img {
+  filter: brightness(0.75);
+}
+
 /* Custom cursor: hide default when custom is visible (desktop only) */
 body.custom-cursor {
   cursor: none;

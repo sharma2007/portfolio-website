@@ -10,6 +10,7 @@ const SECTIONS = [
   { id: "about", label: "About" },
   { id: "resume", label: "Resume" },
   { id: "projects", label: "Projects" },
+  { id: "tech-stack", label: "Tech" },
   { id: "awards", label: "Awards" },
   { id: "camps", label: "Camps" },
   { id: "certifications", label: "Certs" },

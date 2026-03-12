@@ -2,9 +2,10 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Resume from "@/components/Resume";
+import Projects from "@/components/Projects";
+import TechStack from "@/components/TechStack";
 import Awards from "@/components/Awards";
 import Camps from "@/components/Camps";
-import Projects from "@/components/Projects";
 import Certifications from "@/components/Certifications";
 import Languages from "@/components/Languages";
 import Footer from "@/components/Footer";
@@ -20,6 +21,7 @@ export default function Home() {
         <About />
         <Resume />
         <Projects />
+        <TechStack />
         <Awards />
         <Camps />
         <Certifications />
