@@ -55,7 +55,7 @@ export default function Resume() {
       </div>
 
       <div className="relative">
-        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-white/10 -translate-x-px" />
+        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-muted/40 -translate-x-px" />
         {experiences.map((item, i) => {
           const isLeft = i % 2 === 0;
           return (
@@ -110,7 +110,7 @@ export default function Resume() {
       </div>
 
       <div className="relative">
-        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-white/10 -translate-x-px" />
+        <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-muted/40 -translate-x-px" />
         {education.map((item, i) => {
           const isLeft = i % 2 === 0;
           return (
