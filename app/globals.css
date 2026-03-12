@@ -10,6 +10,7 @@
   --color-accent: #00d4ff;
   --color-accent-dim: rgba(0, 212, 255, 0.15);
   --color-timeline-line: rgba(255, 255, 255, 0.25);
+  --color-cursor-ring: rgba(0, 212, 255, 0.4);
 }
 
 [data-theme="light"] {
@@ -20,6 +21,7 @@
   --color-accent: #0891b2;
   --color-accent-dim: rgba(8, 145, 178, 0.12);
   --color-timeline-line: rgba(0, 0, 0, 0.2);
+  --color-cursor-ring: rgba(8, 145, 178, 0.75);
 }
 
 html {

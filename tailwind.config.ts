@@ -20,6 +20,7 @@ const config: Config = {
         accent: "var(--color-accent)",
         accentDim: "var(--color-accent-dim)",
         timelineLine: "var(--color-timeline-line)",
+        cursorRing: "var(--color-cursor-ring)",
       },
       animation: {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",

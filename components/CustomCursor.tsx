@@ -61,7 +61,7 @@ export default function CustomCursor() {
         style={{ left: pos.x, top: pos.y }}
       />
       <div
-        className="pointer-events-none fixed z-[9998] h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent/40"
+        className="pointer-events-none fixed z-[9998] h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-cursorRing"
         style={{ left: ring.x, top: ring.y }}
       />
     </>
