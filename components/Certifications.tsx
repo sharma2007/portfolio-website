@@ -9,6 +9,14 @@ import type { Certification } from "@/lib/types";
 import AdminButtons from "./AdminButtons";
 import Modal from "./Modal";
 
+/** Map old cert image paths (with spaces / %20) to current filenames without spaces. */
+function certImageSrc(img: string | null): string | null {
+  if (!img) return null;
+  if (img.includes("Learn%20Intermediate%20C++") || img.includes("Learn Intermediate C++ Course")) return "/images/certifications/Learn_Intermediate_Cpp_Course.avif";
+  if (img.includes("Learn%20C++%20Course") || img.includes("Learn C++ Course.avif")) return "/images/certifications/Learn_Cpp_Course.avif";
+  return img;
+}
+
 export default function Certifications() {
   const { isAdmin } = useAuth();
   const { certifications, createCertification, updateCertification, deleteCertification, isSupabase } = useResume();
@@ -51,8 +59,8 @@ export default function Certifications() {
               </div>
             )}
             <div className="aspect-[4/3] bg-bg/50 relative">
-              {cert.img ? (
-                <Image src={cert.img} alt={cert.alt} fill className="object-cover" unoptimized />
+              {certImageSrc(cert.img) ? (
+                <Image src={certImageSrc(cert.img)!} alt={cert.alt} fill className="object-cover" unoptimized />
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-surface to-bg text-muted p-4 text-center">
                   <span className="text-lg font-semibold text-text line-clamp-2">{cert.title}</span>
