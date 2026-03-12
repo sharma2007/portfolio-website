@@ -2,15 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-bg: #0a0a0f;
+  --color-surface: #12121a;
+  --color-text: #e8e8e8;
+  --color-muted: #9ca3af;
+  --color-accent: #00d4ff;
+  --color-accent-dim: rgba(0, 212, 255, 0.15);
+}
+
+[data-theme="light"] {
+  --color-bg: #f4f4f5;
+  --color-surface: #ffffff;
+  --color-text: #18181b;
+  --color-muted: #71717a;
+  --color-accent: #0891b2;
+  --color-accent-dim: rgba(8, 145, 178, 0.12);
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  @apply antialiased bg-slate-50 text-slate-800;
+  @apply antialiased;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Icomoon icon font - served from public/fonts/icomoon */
+/* Grain overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+[data-theme="light"] body::before {
+  opacity: 0.02;
+}
+
+/* Icomoon icon font */
 @font-face {
   font-family: 'icomoon';
   src: url('/fonts/icomoon/icomoon.eot');
@@ -40,3 +76,30 @@ body {
 .icon-github2:before { content: "\ec6d"; }
 .icon-arrow-right22:before { content: "\ebfa"; }
 .icon-arrow-up22:before { content: "\ebf8"; }
+
+/* Glowing ring for avatar */
+@keyframes ring-glow {
+  0%, 100% { box-shadow: 0 0 20px var(--color-accent), 0 0 40px var(--color-accent-dim); }
+  50% { box-shadow: 0 0 28px var(--color-accent), 0 0 56px var(--color-accent-dim); }
+}
+
+.avatar-ring {
+  animation: ring-glow 2.5s ease-in-out infinite;
+}
+
+/* CTA hover glow */
+.cta-glow {
+  transition: all 0.3s ease;
+}
+.cta-glow:hover {
+  box-shadow: 0 0 24px var(--color-accent-dim), 0 0 48px rgba(0, 212, 255, 0.1);
+}
+
+/* Custom cursor: hide default when custom is visible (desktop only) */
+body.custom-cursor {
+  cursor: none;
+}
+body.custom-cursor a,
+body.custom-cursor button {
+  cursor: none;
+}

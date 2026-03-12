@@ -10,13 +10,32 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
-        serif: ["var(--font-instrument)", "Georgia", "serif"],
+        display: ["var(--font-syne)", "var(--font-dm-sans)", "sans-serif"],
       },
       colors: {
-        accent: "#0d9488",
-        accentDark: "#0f766e",
-        dark: "#1e293b",
-        muted: "#64748b",
+        bg: "var(--color-bg)",
+        surface: "var(--color-surface)",
+        text: "var(--color-text)",
+        muted: "var(--color-muted)",
+        accent: "var(--color-accent)",
+        accentDim: "var(--color-accent-dim)",
+      },
+      animation: {
+        "glow-pulse": "glow-pulse 2s ease-in-out infinite",
+        float: "float 4s ease-in-out infinite",
+      },
+      keyframes: {
+        "glow-pulse": {
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 20px var(--color-accent)" },
+          "50%": { opacity: "0.8", boxShadow: "0 0 32px var(--color-accent)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+      },
+      backgroundImage: {
+        grain: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
       },
     },
   },

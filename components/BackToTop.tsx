@@ -26,7 +26,7 @@ export default function BackToTop() {
           <Link
             href="#top"
             aria-label="Back to top"
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-white shadow-lg hover:bg-accentDark transition-colors"
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-bg shadow-lg hover:shadow-accent/30 cta-glow transition-all duration-300"
           >
             <i className="icon-arrow-up22 text-xl" />
           </Link>

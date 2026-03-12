@@ -9,6 +9,13 @@ import type { Project } from "@/lib/types";
 import AdminButtons from "./AdminButtons";
 import Modal from "./Modal";
 
+function getBentoClass(i: number) {
+  if (i === 0) return "md:col-span-2 md:row-span-2 min-h-[280px]";
+  if (i === 1) return "md:col-span-1 min-h-[220px]";
+  if (i === 2) return "md:col-span-1 min-h-[220px]";
+  return "md:col-span-1 min-h-[200px]";
+}
+
 export default function Projects() {
   const { isAdmin } = useAuth();
   const { projects, createProject, updateProject, deleteProject, isSupabase } = useResume();
@@ -18,57 +25,64 @@ export default function Projects() {
   return (
     <motion.section
       id="projects"
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.5 }}
       className="mb-24 scroll-mt-24"
     >
       <div className="flex items-center justify-between gap-4 mb-4">
-        <h2 className="font-sans font-semibold text-3xl sm:text-4xl text-dark tracking-tight">Projects</h2>
+        <h2 className="font-display font-bold text-3xl sm:text-4xl text-text tracking-tight">Projects</h2>
         {canEdit && (
-          <button type="button" onClick={() => setModal({ open: true, item: null })} className="text-sm px-3 py-1.5 rounded bg-accent text-white hover:bg-accentDark">
+          <button type="button" onClick={() => setModal({ open: true, item: null })} className="text-sm px-3 py-1.5 rounded-lg bg-accent/20 text-accent hover:bg-accent/30 transition-all duration-300">
             + Add
           </button>
         )}
       </div>
       <p className="text-muted text-lg mb-12">Technology and creativity in action.</p>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:auto-rows-[220px]">
         {projects.map((proj, i) => (
           <motion.article
             key={proj.id}
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.06, duration: 0.4 }}
-            className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow flex flex-col relative group"
+            transition={{ delay: i * 0.05, duration: 0.4 }}
+            className={`group relative rounded-2xl overflow-hidden border border-white/10 bg-surface ${getBentoClass(i)} transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-accent/5 hover:border-accent/20`}
           >
-            {canEdit && (
-              <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                <AdminButtons
-                  onEdit={() => setModal({ open: true, item: proj })}
-                  onDelete={() => window.confirm("Delete this project?") && deleteProject(proj.id)}
-                />
-              </div>
-            )}
-            <div className="aspect-video bg-slate-100 relative">
-              <Image src={proj.img} alt={proj.title} fill className="object-cover" unoptimized />
+            <div className="absolute inset-0">
+              <Image src={proj.img} alt={proj.title} fill className="object-cover transition-transform duration-300 group-hover:scale-105" unoptimized />
+              <div className="absolute inset-0 bg-gradient-to-t from-bg/95 via-bg/40 to-transparent" />
             </div>
-            <div className="p-6 flex-1 flex flex-col">
-              <span className="text-muted text-sm">{proj.date}</span>
-              <h3 className="text-xl font-semibold text-dark mt-2">
+            <div className="absolute inset-0 p-5 flex flex-col justify-end">
+              {canEdit && (
+                <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <AdminButtons
+                    onEdit={() => setModal({ open: true, item: proj })}
+                    onDelete={() => window.confirm("Delete this project?") && deleteProject(proj.id)}
+                  />
+                </div>
+              )}
+              <span className="text-accent/90 text-xs font-medium">{proj.date}</span>
+              <h3 className="font-display font-semibold text-lg text-text mt-0.5">
                 {proj.link ? (
-                  <a href={proj.link} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
+                  <a href={proj.link} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors duration-300">
                     {proj.title}
                   </a>
                 ) : (
                   proj.title
                 )}
               </h3>
-              {proj.subtitle && <p className="text-slate-600 text-sm mt-1">{proj.subtitle}</p>}
-              <p className="text-slate-700 mt-2 flex-1">{proj.desc}</p>
+              {proj.subtitle && <p className="text-muted text-sm mt-0.5">{proj.subtitle}</p>}
+              <p className="text-muted text-sm mt-2 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">{proj.desc}</p>
               {proj.cta && proj.ctaHref && (
-                <a href={proj.ctaHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-accent font-medium mt-4 hover:gap-2 transition-all">
+                <a
+                  href={proj.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-accent font-medium text-sm mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:gap-2"
+                >
                   {proj.cta} <i className="icon-arrow-right22" />
                 </a>
               )}
@@ -129,17 +143,17 @@ function ProjectForm({
       }}
       className="space-y-4"
     >
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">Title</label><input value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">Date</label><input value={date} onChange={(e) => setDate(e.target.value)} className="w-full px-3 py-2 border rounded-lg" placeholder="e.g. November 2023 – Jan 2025" /></div>
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">Subtitle (optional)</label><input value={subtitle} onChange={(e) => setSubtitle(e.target.value)} className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">Description</label><textarea value={desc} onChange={(e) => setDesc(e.target.value)} required rows={3} className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">Image URL</label><input value={img} onChange={(e) => setImg(e.target.value)} className="w-full px-3 py-2 border rounded-lg" placeholder="/images/projects/..." /></div>
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">Project link (optional)</label><input value={link} onChange={(e) => setLink(e.target.value)} type="url" className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">CTA label (e.g. Website)</label><input value={cta} onChange={(e) => setCta(e.target.value)} className="w-full px-3 py-2 border rounded-lg" /></div>
-      <div><label className="block text-sm font-medium text-slate-700 mb-1">CTA URL</label><input value={ctaHref} onChange={(e) => setCtaHref(e.target.value)} type="url" className="w-full px-3 py-2 border rounded-lg" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Title</label><input value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Date</label><input value={date} onChange={(e) => setDate(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" placeholder="e.g. November 2023 – Jan 2025" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Subtitle (optional)</label><input value={subtitle} onChange={(e) => setSubtitle(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Description</label><textarea value={desc} onChange={(e) => setDesc(e.target.value)} required rows={3} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Image URL</label><input value={img} onChange={(e) => setImg(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" placeholder="/images/projects/..." /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Project link (optional)</label><input value={link} onChange={(e) => setLink(e.target.value)} type="url" className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">CTA label (e.g. Website)</label><input value={cta} onChange={(e) => setCta(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">CTA URL</label><input value={ctaHref} onChange={(e) => setCtaHref(e.target.value)} type="url" className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
       <div className="flex gap-2 justify-end">
-        <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg border border-slate-300 hover:bg-slate-50">Cancel</button>
-        <button type="submit" disabled={saving} className="px-4 py-2 rounded-lg bg-accent text-white hover:bg-accentDark disabled:opacity-50">{saving ? "Saving..." : "Save"}</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg border border-white/20 text-text hover:bg-white/5 transition-all duration-300">Cancel</button>
+        <button type="submit" disabled={saving} className="px-4 py-2 rounded-lg bg-accent text-bg hover:bg-accent/90 disabled:opacity-50 transition-all duration-300">{saving ? "Saving..." : "Save"}</button>
       </div>
     </form>
   );

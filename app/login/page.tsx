@@ -15,9 +15,9 @@ export default function LoginPage() {
   const supabase = createClient();
   if (!supabase) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-bg px-4">
         <div className="text-center max-w-md">
-          <p className="text-slate-600 mb-4">Authentication is not configured. Add Supabase env vars (see .env.local.example).</p>
+          <p className="text-muted mb-4">Authentication is not configured. Add Supabase env vars (see .env.local.example).</p>
           <Link href="/" className="text-accent hover:underline">Back to site</Link>
         </div>
       </div>
@@ -56,35 +56,35 @@ export default function LoginPage() {
   const allowSignUp = process.env.NEXT_PUBLIC_ALLOW_SIGNUP === "true";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-bg px-4">
       <div className="w-full max-w-sm">
-        <h1 className="font-sans font-semibold text-2xl text-dark mb-6 text-center">Log in</h1>
+        <h1 className="font-display font-semibold text-2xl text-text mb-6 text-center">Log in</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium text-text mb-1">Email</label>
             <input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+              className="w-full px-4 py-2 rounded-lg bg-surface border border-white/10 text-text focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300"
               placeholder="you@example.com"
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium text-text mb-1">Password</label>
             <input
               id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent"
+              className="w-full px-4 py-2 rounded-lg bg-surface border border-white/10 text-text focus:ring-2 focus:ring-accent focus:border-accent transition-all duration-300"
             />
           </div>
           {message && (
-            <p className={`text-sm ${message.type === "error" ? "text-red-600" : "text-green-600"}`}>
+            <p className={`text-sm ${message.type === "error" ? "text-red-400" : "text-emerald-400"}`}>
               {message.text}
             </p>
           )}
@@ -92,7 +92,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2 px-4 bg-accent text-white rounded-lg font-medium hover:bg-accentDark disabled:opacity-50"
+              className="flex-1 py-2 px-4 bg-accent text-bg rounded-lg font-medium hover:bg-accent/90 disabled:opacity-50 transition-all duration-300"
             >
               {loading ? "..." : "Log in"}
             </button>
@@ -101,14 +101,14 @@ export default function LoginPage() {
                 type="button"
                 onClick={handleSignUp}
                 disabled={loading}
-                className="flex-1 py-2 px-4 border border-slate-300 rounded-lg font-medium hover:bg-slate-50 disabled:opacity-50"
+                className="flex-1 py-2 px-4 border border-white/20 rounded-lg font-medium text-text hover:bg-white/5 disabled:opacity-50 transition-all duration-300"
               >
                 Sign up
               </button>
             )}
           </div>
         </form>
-        <p className="mt-4 text-center text-sm text-slate-500">
+        <p className="mt-4 text-center text-sm text-muted">
           <Link href="/" className="text-accent hover:underline">Back to site</Link>
         </p>
       </div>
