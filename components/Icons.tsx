@@ -10,11 +10,13 @@ export function IconLinkedIn({ className = "", size = "md" }: { className?: stri
   return (
     <svg
       className={`${sizeClass(size)} ${className}`}
-      viewBox="0 0 30 30"
+      viewBox="0 0 24 24"
       fill="currentColor"
       aria-hidden
     >
-      <path d={LINKEDIN_PATH} />
+      <g transform="translate(12, 12) scale(0.8) translate(-15, -15)">
+        <path d={LINKEDIN_PATH} />
+      </g>
     </svg>
   );
 }
