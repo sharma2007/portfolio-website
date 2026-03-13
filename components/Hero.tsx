@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { IconLinkedIn, IconGitHub } from "./Icons";
 
 const ROLES = ["CS Student.", "Conrad Innovator.", "Builder.", "Problem Solver."];
 
@@ -110,7 +111,7 @@ export default function Hero() {
             aria-label="LinkedIn"
             className="flex h-12 w-12 items-center justify-center rounded-full bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 cta-glow transition-all duration-300"
           >
-            <i className="icon-linkedin2 text-2xl" />
+            <IconLinkedIn size="lg" className="text-2xl" />
           </a>
           <a
             href="https://github.com/sharma2007"
@@ -119,7 +120,7 @@ export default function Hero() {
             aria-label="GitHub"
             className="flex h-12 w-12 items-center justify-center rounded-full bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 cta-glow transition-all duration-300"
           >
-            <i className="icon-github2 text-2xl" />
+            <IconGitHub size="lg" className="text-2xl" />
           </a>
         </motion.div>
       </motion.div>

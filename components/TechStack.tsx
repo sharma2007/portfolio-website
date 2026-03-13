@@ -47,7 +47,7 @@ const STACK = [
 
 /** Simple Icons CDN: no color = official brand color. Hover brightens via CSS. */
 const ICON_BASE = "https://cdn.simpleicons.org";
-const ULTRALYTICS_AVATAR = "https://avatars.githubusercontent.com/u/26833451?s=128";
+const ULTRALYTICS_AVATAR = "https://avatars.githubusercontent.com/u/26833451?s=48";
 
 function TechItem({
   name,

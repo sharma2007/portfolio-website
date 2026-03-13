@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { IconLinkedIn, IconGitHub } from "./Icons";
 
 const STATS = [
   "200+ students mentored",
@@ -70,7 +71,7 @@ export default function About() {
               aria-label="LinkedIn"
               className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 transition-all duration-300 cta-glow"
             >
-              <i className="icon-linkedin2" />
+              <IconLinkedIn size="md" />
             </a>
             <a
               href="https://github.com/sharma2007"
@@ -79,7 +80,7 @@ export default function About() {
               aria-label="GitHub"
               className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 transition-all duration-300 cta-glow"
             >
-              <i className="icon-github2" />
+              <IconGitHub size="md" />
             </a>
           </div>
         </motion.div>

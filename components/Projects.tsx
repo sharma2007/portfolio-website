@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import type { Project } from "@/lib/types";
 import AdminButtons from "./AdminButtons";
 import Modal from "./Modal";
+import { IconArrowRight } from "./Icons";
 
 function getBentoClass(i: number) {
   if (i === 0) return "md:col-span-2 md:row-span-2 min-h-[280px]";
@@ -84,7 +85,7 @@ export default function Projects() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-accent font-medium text-sm mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:gap-2"
                 >
-                  {proj.cta} <i className="icon-arrow-right22" />
+                  {proj.cta} <IconArrowRight />
                 </a>
               )}
             </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { IconArrowUp } from "./Icons";
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);
@@ -28,7 +29,7 @@ export default function BackToTop() {
             aria-label="Back to top"
             className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-bg shadow-lg hover:shadow-accent/30 cta-glow transition-all duration-300"
           >
-            <i className="icon-arrow-up22 text-xl" />
+            <IconArrowUp />
           </Link>
         </motion.div>
       )}
