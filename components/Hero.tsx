@@ -111,7 +111,7 @@ export default function Hero() {
             aria-label="LinkedIn"
             className="flex h-12 w-12 items-center justify-center rounded-full bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 cta-glow transition-all duration-300"
           >
-            <IconLinkedIn size="lg" className="text-2xl" />
+            <IconLinkedIn size="xl" />
           </a>
           <a
             href="https://github.com/sharma2007"
@@ -120,7 +120,7 @@ export default function Hero() {
             aria-label="GitHub"
             className="flex h-12 w-12 items-center justify-center rounded-full bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 cta-glow transition-all duration-300"
           >
-            <IconGitHub size="lg" className="text-2xl" />
+            <IconGitHub size="xl" />
           </a>
         </motion.div>
       </motion.div>
