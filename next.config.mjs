@@ -9,6 +9,8 @@ const nextConfig = {
     return [
       // Google (and many tools) request /favicon.ico at the root; serve our favicon there
       { source: "/favicon.ico", destination: "/images/favicon/favicon.ico" },
+      // Sitemap with explicit application/xml so GSC can read it
+      { source: "/sitemap.xml", destination: "/api/sitemap" },
     ];
   },
 };
