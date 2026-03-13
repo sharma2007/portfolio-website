@@ -68,9 +68,12 @@ body::before {
   box-shadow: 0 0 24px var(--color-accent-dim), 0 0 48px rgba(0, 212, 255, 0.1);
 }
 
-/* LinkedIn icon from Wikimedia: invert in dark theme so it stays visible */
+/* LinkedIn icon from Wikimedia: blue → white in dark mode, blue → black in light mode */
 [data-theme="dark"] .linkedin-icon {
-  filter: invert(1);
+  filter: brightness(0) invert(1);
+}
+[data-theme="light"] .linkedin-icon {
+  filter: brightness(0);
 }
 
 /* Custom cursor: hide default when custom is visible (desktop only) */
