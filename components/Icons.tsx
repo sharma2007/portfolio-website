@@ -14,7 +14,7 @@ export function IconLinkedIn({ className = "", size = "md" }: { className?: stri
       fill="currentColor"
       aria-hidden
     >
-      <g transform="translate(12, 12) scale(0.8) translate(-15, -15)">
+      <g transform="translate(12, 12) scale(1.0) translate(-15, -15)">
         <path d={LINKEDIN_PATH} />
       </g>
     </svg>
