@@ -5,6 +5,12 @@ const nextConfig = {
     unoptimized: false,
   },
   trailingSlash: false,
+  async rewrites() {
+    return [
+      // Google (and many tools) request /favicon.ico at the root; serve our favicon there
+      { source: "/favicon.ico", destination: "/images/favicon/favicon.ico" },
+    ];
+  },
 };
 
 export default nextConfig;
