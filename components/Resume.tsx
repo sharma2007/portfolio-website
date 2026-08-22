@@ -100,6 +100,28 @@ export default function Resume() {
 
 type TimelineItem = (Experience | Education) & { id: string };
 
+/** Renders a body as bullets when it has multiple lines, else a paragraph. */
+function TimelineBody({ text }: { text: string }) {
+  const lines = text
+    .split(/\r?\n/)
+    .map((l) => l.trim().replace(/^[-•*]\s*/, ""))
+    .filter(Boolean);
+
+  if (lines.length <= 1) {
+    return <p className="mt-3 text-muted text-sm leading-relaxed">{text}</p>;
+  }
+  return (
+    <ul className="mt-3 space-y-2">
+      {lines.map((line, i) => (
+        <li key={i} className="flex gap-2.5 text-muted text-sm leading-relaxed">
+          <span aria-hidden className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-accent" />
+          <span>{line}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function Timeline({
   items,
   canEdit,
@@ -138,7 +160,7 @@ function Timeline({
               )}
               <h4 className="font-display font-semibold text-lg text-text pr-16">{item.title}</h4>
               <p className="font-mono text-xs text-accent mt-1.5">{item.meta}</p>
-              <p className="mt-3 text-muted text-sm leading-relaxed">{item.body}</p>
+              <TimelineBody text={item.body} />
             </div>
           </motion.div>
         ))}
@@ -171,8 +193,8 @@ function EntryForm({
         <input value={meta} onChange={(e) => setMeta(e.target.value)} required className="w-full px-3 py-2 rounded-lg bg-surface border border-line text-text" />
       </div>
       <div>
-        <label className="block text-sm font-medium text-text mb-1">Description</label>
-        <textarea value={body} onChange={(e) => setBody(e.target.value)} required rows={4} className="w-full px-3 py-2 rounded-lg bg-surface border border-line text-text" />
+        <label className="block text-sm font-medium text-text mb-1">Description <span className="text-muted font-normal">(one achievement per line = bullets)</span></label>
+        <textarea value={body} onChange={(e) => setBody(e.target.value)} required rows={5} className="w-full px-3 py-2 rounded-lg bg-surface border border-line text-text" />
       </div>
       <div className="flex gap-2 justify-end">
         <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg border border-line text-text hover:bg-white/5 transition-colors">Cancel</button>

@@ -1,7 +1,25 @@
 import type { Experience, Education, Project, Award, Certification, Camp, Language } from "./types";
 
 export const DEFAULT_EXPERIENCES: Experience[] = [
-  { title: "Development Intern", meta: "December 2025 – Present · INDMoney · Remote", body: "Working on automating the role of a personal finance manager, explaining a financial report to a customer and providing actionable next steps through n8n workflows and AI agents." },
+  {
+    title: "AI Engineer Intern",
+    meta: "June 2026 – August 2026 · CarryAI · Hong Kong SAR, China",
+    body: [
+      "Built a distributed ROS 2 autonomy stack for a quadruped robot: RTAB-Map SLAM, Nav2, and frontier-based exploration with return-to-start mission logic.",
+      "Wrote a Unitree L2 LiDAR ROS 2 driver with custom UDP parsing and pre-flight diagnostics.",
+      "Integrated a VLM patrol pipeline via a Redis pose bridge and RTSP video relay.",
+      "Set up Gazebo + Docker simulation and a multi-machine CycloneDDS deployment for hardware-free testing.",
+    ].join("\n"),
+  },
+  {
+    title: "Development Intern",
+    meta: "December 2025 – March 2026 · INDMoney · Remote",
+    body: [
+      "Built a Python/FastAPI portfolio-rebalancing engine that turns holdings, goals, and tax/lock-in constraints into explainable buy/sell plans.",
+      "Developed async AI advisory chat via n8n workflows and agentic AI.",
+      "Shipped a web UI for what-if simulations and goal-aware investment recommendations.",
+    ].join("\n"),
+  },
   { title: "Prefect & Student Council", meta: "September 2021 – May 2025 · Member of Student Governments @ DIA", body: "Initiating school-wide projects and events, raising $2000+ for local non-profits. Policies revision of the student code and ensuring compliance with attendance rules. Conflict resolution & fostering community spirit." },
   { title: "President & Mentor", meta: "September 2021 – August 2024 · Matheletes & RAP Program @ DIA", body: "Provided student mentorship and support—one-on-one mentorship to struggling students. Organized inter-school and outside school math competitions, coordinating logistics and engaging over 200 participants. Led interactive workshops on combinatorics, calculus, and number theory, engaging 50+ students per session." },
   { title: "Intern", meta: "June 2023 · Dubai International Academy", body: "Independently designing, conducting, and writing reports on physics, chemistry and biology experiments, enhancing scientific problem-solving skills." },
