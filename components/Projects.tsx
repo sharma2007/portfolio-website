@@ -23,7 +23,7 @@ export default function Projects() {
   return (
     <motion.section id="projects" className="mb-28 scroll-mt-24">
       <SectionHeading
-        index="01 / SELECTED WORK"
+        index="03 / SELECTED WORK"
         title="Projects"
         subtitle="Technology and creativity in action — from lattice cryptography to wearable safety systems."
         action={

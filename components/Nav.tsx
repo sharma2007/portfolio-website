@@ -8,8 +8,8 @@ import { IconDownload } from "./Icons";
 
 const SECTIONS = [
   { id: "about", label: "About" },
-  { id: "projects", label: "Work" },
   { id: "resume", label: "Experience" },
+  { id: "projects", label: "Work" },
   { id: "tech-stack", label: "Skills" },
   { id: "awards", label: "Awards" },
   { id: "contact", label: "Contact" },
@@ -98,12 +98,12 @@ export default function Nav() {
               )}
             </button>
             <a
-              href="/resume.pdf"
+              href="/cv.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-line px-3.5 py-1.5 text-sm text-text hover:border-accent hover:text-accent transition-colors"
             >
-              <IconDownload /> Résumé
+              <IconDownload /> CV
             </a>
           </div>
 
@@ -143,13 +143,13 @@ export default function Nav() {
               </Link>
             ))}
             <a
-              href="/resume.pdf"
+              href="/cv.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary mt-2 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
               onClick={() => setOpen(false)}
             >
-              <IconDownload /> Download résumé
+              <IconDownload /> Download CV
             </a>
             <button
               type="button"

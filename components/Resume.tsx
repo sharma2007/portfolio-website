@@ -32,17 +32,17 @@ export default function Resume() {
   return (
     <section id="resume" className="mb-28 scroll-mt-24">
       <SectionHeading
-        index="03 / TRAJECTORY"
+        index="02 / TRAJECTORY"
         title="Experience"
         subtitle="Roles, leadership, and the education behind the work."
         action={
           <a
-            href="/resume.pdf"
+            href="/cv.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-ghost shrink-0 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold"
           >
-            <IconDownload /> Résumé (PDF)
+            <IconDownload /> CV (PDF)
           </a>
         }
       />

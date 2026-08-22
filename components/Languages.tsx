@@ -28,7 +28,7 @@ export default function Languages() {
           ) : undefined
         }
       />
-      <div className="grid sm:grid-cols-2 gap-6 max-w-4xl">
+      <div className="grid sm:grid-cols-2 gap-6">
         {languages.map((lang, i) => (
           <motion.div
             key={lang.id}

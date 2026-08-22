@@ -22,12 +22,33 @@ const item = {
 export default function Hero() {
   const reduced = usePrefersReducedMotion();
   const [roleIndex, setRoleIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (reduced) return;
-    const id = setInterval(() => setRoleIndex((i) => (i + 1) % ROLES.length), 2400);
-    return () => clearInterval(id);
-  }, [reduced]);
+    if (reduced) {
+      setDisplayText(ROLES[0]);
+      return;
+    }
+    const full = ROLES[roleIndex];
+    let timeout: ReturnType<typeof setTimeout>;
+    if (!isDeleting) {
+      if (displayText.length < full.length) {
+        timeout = setTimeout(() => setDisplayText(full.slice(0, displayText.length + 1)), 85);
+      } else {
+        // Fully typed — hold, then start deleting
+        timeout = setTimeout(() => setIsDeleting(true), 1500);
+      }
+    } else {
+      if (displayText.length > 0) {
+        timeout = setTimeout(() => setDisplayText(full.slice(0, displayText.length - 1)), 40);
+      } else {
+        setIsDeleting(false);
+        setRoleIndex((i) => (i + 1) % ROLES.length);
+      }
+    }
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, roleIndex, reduced]);
 
   return (
     <header className="relative min-h-screen flex items-center px-6 pt-28 pb-20 overflow-hidden">
@@ -47,7 +68,7 @@ export default function Hero() {
         <div>
           <motion.p variants={item} className="kicker text-accent mb-6 flex items-center gap-3">
             <span className="inline-block h-px w-8 bg-accent" />
-            Portfolio — Est. Dubai
+            Portfolio
           </motion.p>
 
           <motion.h1
@@ -62,8 +83,8 @@ export default function Hero() {
           <motion.p variants={item} className="mt-7 text-lg sm:text-xl text-muted max-w-xl leading-relaxed">
             Computer Science student at{" "}
             <span className="text-text font-medium">HKUST</span>, building at the intersection of{" "}
-            <span className="relative inline-block text-accent font-medium min-w-[9ch] font-mono text-base sm:text-lg align-baseline">
-              {ROLES[roleIndex]}
+            <span className="relative inline-block text-accent font-medium font-mono text-base sm:text-lg align-baseline">
+              {displayText}
               {!reduced && <span className="animate-blink text-accent">_</span>}
             </span>
             .
@@ -71,12 +92,12 @@ export default function Hero() {
 
           <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-3">
             <a
-              href="/resume.pdf"
+              href="/cv.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
             >
-              <IconDownload /> Download résumé
+              <IconDownload /> Download CV
             </a>
             <Link
               href="#contact"
@@ -118,7 +139,6 @@ export default function Hero() {
         {/* Right: avatar + dossier spec sheet */}
         <motion.div variants={item} className="relative mx-auto lg:mx-0 w-full max-w-sm">
           <div className="relative rounded-3xl border border-line bg-surface/60 backdrop-blur-sm p-5 shadow-card">
-            <span aria-hidden className="absolute top-3 left-3 kicker text-muted/70">FIG. 01</span>
             <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-line avatar-ring">
               <Image
                 src="/images/user.avif"
@@ -134,6 +154,7 @@ export default function Hero() {
               <SpecRow label="BASED" value="Hong Kong / Dubai" />
               <SpecRow label="FOCUS" value="Software · AI · Systems" />
               <SpecRow label="AWARDS" value="Conrad Innovator" />
+              <SpecRow label="SCHOLAR" value="HKSAR TDSF · 2026" />
             </dl>
           </div>
         </motion.div>

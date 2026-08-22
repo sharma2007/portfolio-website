@@ -16,7 +16,7 @@ const EMAIL = "sharmasoham2007@gmail.com";
 export default function About() {
   return (
     <section id="about" className="mb-28 scroll-mt-24">
-      <SectionHeading index="02 / PROFILE" title="About" />
+      <SectionHeading index="01 / PROFILE" title="About" />
 
       <div className="grid lg:grid-cols-5 gap-10 lg:gap-14">
         <motion.div

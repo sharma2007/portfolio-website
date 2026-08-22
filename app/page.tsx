@@ -22,8 +22,8 @@ export default function Home() {
       <Hero />
       <main className="max-w-6xl mx-auto px-6 py-16 sm:py-24">
         <About />
-        <Projects />
         <Resume />
+        <Projects />
         <TechStack />
         <Awards />
         <Camps />

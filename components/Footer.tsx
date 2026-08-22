@@ -7,8 +7,8 @@ const EMAIL = "sharmasoham2007@gmail.com";
 
 const NAV = [
   { id: "about", label: "About" },
-  { id: "projects", label: "Work" },
   { id: "resume", label: "Experience" },
+  { id: "projects", label: "Work" },
   { id: "tech-stack", label: "Skills" },
   { id: "awards", label: "Awards" },
   { id: "contact", label: "Contact" },
@@ -49,7 +49,7 @@ export default function Footer() {
           <div>
             <h3 className="kicker text-muted mb-4">Elsewhere</h3>
             <ul className="space-y-2.5">
-              <li><a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent transition-colors text-sm">Résumé (PDF)</a></li>
+              <li><a href="/cv.pdf" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent transition-colors text-sm">CV (PDF)</a></li>
               <li><a href="https://linkedin.com/in/ssharma25" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent transition-colors text-sm">LinkedIn</a></li>
               <li><a href="https://github.com/sharma2007" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-accent transition-colors text-sm">GitHub</a></li>
             </ul>
