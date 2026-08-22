@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Experience, Education, Project, Award, Certification, Camp, Language } from "@/lib/types";
+import { sortByRecency } from "@/lib/dateSort";
 import {
   DEFAULT_EXPERIENCES,
   DEFAULT_EDUCATION,
@@ -57,7 +58,20 @@ type ResumeContextType = ResumeData & {
   isSupabase: boolean;
 };
 
-const defaultData: ResumeData = {
+/** Order every dated section newest-first (by end date). Languages stay as authored. */
+function sortResumeData(d: ResumeData): ResumeData {
+  return {
+    experiences: sortByRecency(d.experiences, (x) => x.meta),
+    education: sortByRecency(d.education, (x) => x.meta),
+    projects: sortByRecency(d.projects, (x) => x.date),
+    awards: sortByRecency(d.awards, (x) => x.sub),
+    certifications: sortByRecency(d.certifications, (x) => x.meta),
+    camps: sortByRecency(d.camps, (x) => x.meta),
+    languages: d.languages,
+  };
+}
+
+const defaultData: ResumeData = sortResumeData({
   experiences: DEFAULT_EXPERIENCES.map((e, i) => ({ ...e, id: `static-exp-${i}` })),
   education: DEFAULT_EDUCATION.map((e, i) => ({ ...e, id: `static-edu-${i}` })),
   projects: DEFAULT_PROJECTS.map((p, i) => ({ ...p, id: `static-proj-${i}` })),
@@ -65,7 +79,7 @@ const defaultData: ResumeData = {
   certifications: DEFAULT_CERTIFICATIONS.map((c, i) => ({ ...c, id: `static-cert-${i}` })),
   camps: DEFAULT_CAMPS.map((c, i) => ({ ...c, id: `static-camp-${i}` })),
   languages: DEFAULT_LANGUAGES.map((l, i) => ({ ...l, id: `static-lang-${i}` })),
-};
+});
 
 const noop = async () => {};
 
@@ -110,13 +124,14 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
     }
     setLoading(true);
     try {
+      // sort_order desc as the base order so the newest-added row wins recency ties.
       const [exp, edu, proj, awd, cert, camp, lang] = await Promise.all([
-        supabase.from("experiences").select("*").order("sort_order", { ascending: true }),
-        supabase.from("education").select("*").order("sort_order", { ascending: true }),
-        supabase.from("projects").select("*").order("sort_order", { ascending: true }),
-        supabase.from("awards").select("*").order("sort_order", { ascending: true }),
-        supabase.from("certifications").select("*").order("sort_order", { ascending: true }),
-        supabase.from("camps").select("*").order("sort_order", { ascending: true }),
+        supabase.from("experiences").select("*").order("sort_order", { ascending: false }),
+        supabase.from("education").select("*").order("sort_order", { ascending: false }),
+        supabase.from("projects").select("*").order("sort_order", { ascending: false }),
+        supabase.from("awards").select("*").order("sort_order", { ascending: false }),
+        supabase.from("certifications").select("*").order("sort_order", { ascending: false }),
+        supabase.from("camps").select("*").order("sort_order", { ascending: false }),
         supabase.from("languages").select("*").order("sort_order", { ascending: true }),
       ]);
 
@@ -137,7 +152,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
       const withFallback = <T,>(rows: T[] | null | undefined, fallback: T[]): T[] =>
         rows && rows.length > 0 ? rows : fallback;
 
-      setData({
+      setData(sortResumeData({
         experiences: withFallback(
           (exp.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body })),
           defaultData.experiences
@@ -163,7 +178,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
           (lang.data ?? []).map((r) => ({ id: r.id as string, name: r.name, level: r.level, fill: r.fill })),
           defaultData.languages
         ),
-      });
+      }));
       setIsSupabase(!!supabase);
     } catch {
       setData(defaultData);
