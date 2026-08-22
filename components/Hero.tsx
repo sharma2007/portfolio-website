@@ -4,139 +4,166 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { IconLinkedIn, IconGitHub } from "./Icons";
+import { IconLinkedIn, IconGitHub, IconMail, IconDownload, IconArrowUpRight } from "./Icons";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
-const ROLES = ["CS Student.", "Conrad Innovator.", "Builder.", "Problem Solver."];
+const ROLES = ["cryptography", "machine learning", "robotics", "full-stack"];
+const EMAIL = "sharmasoham2007@gmail.com";
+
+const container = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+};
 
 export default function Hero() {
+  const reduced = usePrefersReducedMotion();
   const [roleIndex, setRoleIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const full = ROLES[roleIndex];
-    const timeout = setTimeout(
-      () => {
-        if (!isDeleting) {
-          if (displayText.length < full.length) {
-            setDisplayText(full.slice(0, displayText.length + 1));
-          } else {
-            setTimeout(() => setIsDeleting(true), 1800);
-          }
-        } else {
-          if (displayText.length > 0) {
-            setDisplayText(displayText.slice(0, -1));
-          } else {
-            setIsDeleting(false);
-            setRoleIndex((roleIndex + 1) % ROLES.length);
-          }
-        }
-      },
-      isDeleting ? 50 : 120
-    );
-    return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, roleIndex]);
+    if (reduced) return;
+    const id = setInterval(() => setRoleIndex((i) => (i + 1) % ROLES.length), 2400);
+    return () => clearInterval(id);
+  }, [reduced]);
 
   return (
-    <header className="relative min-h-screen flex flex-col items-center justify-center px-6 py-24 overflow-hidden">
-      {/* Gradient mesh background */}
-      <div className="absolute inset-0 bg-bg">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-accent/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-cyan-500/10 blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent/5 blur-[150px]" />
+    <header className="relative min-h-screen flex items-center px-6 pt-28 pb-20 overflow-hidden">
+      {/* Ambient depth: a single warm glow + corner registration marks */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-24 -left-24 w-[520px] h-[520px] rounded-full bg-accent/10 blur-[130px]" />
+        <div className="absolute bottom-0 right-0 w-[420px] h-[420px] rounded-full bg-gold/5 blur-[120px]" />
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-10 flex flex-col items-center text-center"
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="relative z-10 mx-auto w-full max-w-6xl grid lg:grid-cols-[1.35fr_1fr] gap-12 lg:gap-16 items-center"
       >
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full overflow-hidden mb-8 border-4 border-accent/50 avatar-ring"
-        >
-          <div className="relative w-full h-full">
-            <Image
-              src="/images/user.avif"
-              alt="Soham Sharma"
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 640px) 176px, 208px"
-            />
+        {/* Left: identity */}
+        <div>
+          <motion.p variants={item} className="kicker text-accent mb-6 flex items-center gap-3">
+            <span className="inline-block h-px w-8 bg-accent" />
+            Portfolio — Est. Dubai
+          </motion.p>
+
+          <motion.h1
+            variants={item}
+            className="font-display font-black text-5xl sm:text-7xl lg:text-8xl text-text leading-[0.92] tracking-tight"
+          >
+            Soham
+            <br />
+            Sharma
+          </motion.h1>
+
+          <motion.p variants={item} className="mt-7 text-lg sm:text-xl text-muted max-w-xl leading-relaxed">
+            Computer Science student at{" "}
+            <span className="text-text font-medium">HKUST</span>, building at the intersection of{" "}
+            <span className="relative inline-block text-accent font-medium min-w-[9ch] font-mono text-base sm:text-lg align-baseline">
+              {ROLES[roleIndex]}
+              {!reduced && <span className="animate-blink text-accent">_</span>}
+            </span>
+            .
+          </motion.p>
+
+          <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-3">
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
+            >
+              <IconDownload /> Download résumé
+            </a>
+            <Link
+              href="#contact"
+              className="btn-ghost inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold"
+            >
+              Get in touch <IconArrowUpRight />
+            </Link>
+          </motion.div>
+
+          <motion.div variants={item} className="mt-8 flex items-center gap-4">
+            <a
+              href="https://linkedin.com/in/ssharma25"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-surface border border-line text-text hover:text-accent hover:border-accent/50 cta-glow"
+            >
+              <IconLinkedIn size="lg" />
+            </a>
+            <a
+              href="https://github.com/sharma2007"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-surface border border-line text-text hover:text-accent hover:border-accent/50 cta-glow"
+            >
+              <IconGitHub size="lg" />
+            </a>
+            <a
+              href={`mailto:${EMAIL}`}
+              aria-label="Email"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-surface border border-line text-text hover:text-accent hover:border-accent/50 cta-glow"
+            >
+              <IconMail />
+            </a>
+          </motion.div>
+        </div>
+
+        {/* Right: avatar + dossier spec sheet */}
+        <motion.div variants={item} className="relative mx-auto lg:mx-0 w-full max-w-sm">
+          <div className="relative rounded-3xl border border-line bg-surface/60 backdrop-blur-sm p-5 shadow-card">
+            <span aria-hidden className="absolute top-3 left-3 kicker text-muted/70">FIG. 01</span>
+            <div className="relative w-full aspect-square rounded-2xl overflow-hidden border border-line avatar-ring">
+              <Image
+                src="/images/user.avif"
+                alt="Soham Sharma"
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1024px) 384px, 420px"
+              />
+            </div>
+            <dl className="mt-5 space-y-2.5 font-mono text-xs">
+              <SpecRow label="STATUS" value="Open to internships" accent />
+              <SpecRow label="BASED" value="Hong Kong / Dubai" />
+              <SpecRow label="FOCUS" value="Software · AI · Systems" />
+              <SpecRow label="AWARDS" value="Conrad Innovator" />
+            </dl>
           </div>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.5 }}
-          className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-text mb-4 tracking-tight"
-        >
-          Soham Sharma
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.4 }}
-          className="text-lg sm:text-xl text-accent mb-2 min-h-[2rem] font-mono"
-        >
-          {displayText}
-          <span className="animate-pulse">|</span>
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.55, duration: 0.4 }}
-          className="text-muted text-sm sm:text-base mb-10"
-        >
-          Techie / Animal Lover
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="flex gap-4"
-        >
-          <a
-            href="https://linkedin.com/in/ssharma25"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 cta-glow transition-all duration-300"
-          >
-            <IconLinkedIn size="xl" />
-          </a>
-          <a
-            href="https://github.com/sharma2007"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 cta-glow transition-all duration-300"
-          >
-            <IconGitHub size="xl" />
-          </a>
         </motion.div>
       </motion.div>
 
       <Link
         href="#about"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-muted hover:text-accent transition-colors duration-300 text-sm z-10 flex flex-col items-center gap-2"
+        aria-label="Scroll to about section"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-muted hover:text-accent transition-colors kicker z-10 flex flex-col items-center gap-2"
       >
-        <span>Scroll down</span>
+        <span>Scroll</span>
         <motion.span
-          animate={{ y: [0, 6, 0] }}
+          animate={reduced ? undefined : { y: [0, 6, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
           ↓
         </motion.span>
       </Link>
     </header>
+  );
+}
+
+function SpecRow({ label, value, accent = false }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b border-line pb-2 last:border-0 last:pb-0">
+      <dt className="text-muted tracking-widest">{label}</dt>
+      <dd className={`text-right ${accent ? "text-accent" : "text-text"}`}>
+        {accent && <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-accent align-middle" />}
+        {value}
+      </dd>
+    </div>
   );
 }

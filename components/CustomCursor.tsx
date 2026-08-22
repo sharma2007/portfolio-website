@@ -1,69 +1,71 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
+/**
+ * A trailing accent ring that augments — but never replaces — the native
+ * cursor. Disabled on touch devices and when the user prefers reduced motion.
+ */
 export default function CustomCursor() {
-  const [pos, setPos] = useState({ x: -100, y: -100 });
+  const reduced = usePrefersReducedMotion();
   const [ring, setRing] = useState({ x: -100, y: -100 });
   const [visible, setVisible] = useState(false);
-  const posRef = useRef(pos);
+  const [active, setActive] = useState(false);
+  const target = useRef({ x: -100, y: -100 });
 
   useEffect(() => {
-    posRef.current = pos;
-  }, [pos]);
-
-  useEffect(() => {
-    const isTouch = "ontouchstart" in window;
-    if (isTouch) return;
+    const isTouch = window.matchMedia("(hover: none)").matches;
+    if (isTouch || reduced) return;
 
     let ringX = -100;
     let ringY = -100;
     let raf: number;
 
     const onMove = (e: MouseEvent) => {
-      posRef.current = { x: e.clientX, y: e.clientY };
-      setPos(posRef.current);
+      target.current = { x: e.clientX, y: e.clientY };
       setVisible(true);
+      const el = e.target as HTMLElement | null;
+      setActive(!!el?.closest("a, button, [role='button'], input, textarea, select"));
     };
 
     const animate = () => {
-      const { x, y } = posRef.current;
-      ringX += (x - ringX) * 0.12;
-      ringY += (y - ringY) * 0.12;
+      ringX += (target.current.x - ringX) * 0.18;
+      ringY += (target.current.y - ringY) * 0.18;
       setRing({ x: ringX, y: ringY });
       raf = requestAnimationFrame(animate);
     };
     raf = requestAnimationFrame(animate);
 
     const onLeave = () => setVisible(false);
+    const onEnter = () => setVisible(true);
 
     window.addEventListener("mousemove", onMove);
-    document.body.addEventListener("mouseleave", onLeave);
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    document.documentElement.addEventListener("mouseenter", onEnter);
     return () => {
       window.removeEventListener("mousemove", onMove);
-      document.body.removeEventListener("mouseleave", onLeave);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      document.documentElement.removeEventListener("mouseenter", onEnter);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [reduced]);
 
-  useEffect(() => {
-    if (visible) document.body.classList.add("custom-cursor");
-    else document.body.classList.remove("custom-cursor");
-    return () => document.body.classList.remove("custom-cursor");
-  }, [visible]);
-
-  if (!visible) return null;
+  if (reduced || !visible) return null;
 
   return (
-    <>
-      <div
-        className="pointer-events-none fixed z-[9999] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent"
-        style={{ left: pos.x, top: pos.y }}
-      />
-      <div
-        className="pointer-events-none fixed z-[9998] h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-cursorRing"
-        style={{ left: ring.x, top: ring.y }}
-      />
-    </>
+    <div
+      aria-hidden
+      className="cursor-ring pointer-events-none fixed z-[9998] -translate-x-1/2 -translate-y-1/2 rounded-full border"
+      style={{
+        left: ring.x,
+        top: ring.y,
+        width: active ? 44 : 28,
+        height: active ? 44 : 28,
+        borderColor: "var(--color-cursor-ring)",
+        backgroundColor: active ? "var(--color-accent-dim)" : "transparent",
+        mixBlendMode: "difference",
+      }}
+    />
   );
 }

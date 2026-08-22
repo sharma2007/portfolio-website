@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Resume from "@/components/Resume";
 import Projects from "@/components/Projects";
+import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
 
@@ -19,15 +20,16 @@ export default function Home() {
       <div id="top" className="scroll-mt-0" />
       <Nav />
       <Hero />
-      <main className="max-w-5xl mx-auto px-6 py-16 sm:py-24">
+      <main className="max-w-6xl mx-auto px-6 py-16 sm:py-24">
         <About />
-        <Resume />
         <Projects />
+        <Resume />
         <TechStack />
         <Awards />
         <Camps />
         <Certifications />
         <Languages />
+        <Contact />
       </main>
       <Footer />
       <BackToTop />

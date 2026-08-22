@@ -120,7 +120,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         supabase.from("languages").select("*").order("sort_order", { ascending: true }),
       ]);
 
-      const mapProj = (r: Record<string, unknown>) => ({
+      const mapProj = (r: Record<string, unknown>): Project & { id: string } => ({
         id: r.id as string,
         title: r.title as string,
         date: (r.date as string) ?? null,
@@ -132,19 +132,37 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         ctaHref: (r.cta_href as string) ?? (r.ctaHref as string) ?? null,
       });
 
-      const certList = cert.data ?? [];
-      const certificationsMapped = certList.length > 0
-        ? certList.map((r) => ({ id: r.id, title: r.title, meta: r.meta, img: r.img, alt: r.alt, skills: r.skills }))
-        : DEFAULT_CERTIFICATIONS.map((c, idx) => ({ ...c, id: `default-cert-${idx}` }));
+      // Fall back to bundled defaults whenever a table is empty or errored, so a
+      // misconfigured / not-yet-seeded database never renders blank sections.
+      const withFallback = <T,>(rows: T[] | null | undefined, fallback: T[]): T[] =>
+        rows && rows.length > 0 ? rows : fallback;
 
       setData({
-        experiences: (exp.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body })),
-        education: (edu.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body })),
-        projects: (proj.data ?? []).map((r) => mapProj(r)),
-        awards: (awd.data ?? []).map((r) => ({ id: r.id, title: r.title, sub: r.sub, img: r.img, alt: r.alt })),
-        certifications: certificationsMapped,
-        camps: (camp.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body, img: r.img, alt: r.alt, flip: r.flip })),
-        languages: (lang.data ?? []).map((r) => ({ id: r.id, name: r.name, level: r.level, fill: r.fill })),
+        experiences: withFallback(
+          (exp.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body })),
+          defaultData.experiences
+        ),
+        education: withFallback(
+          (edu.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body })),
+          defaultData.education
+        ),
+        projects: withFallback((proj.data ?? []).map((r) => mapProj(r)), defaultData.projects),
+        awards: withFallback(
+          (awd.data ?? []).map((r) => ({ id: r.id as string, title: r.title, sub: r.sub, img: r.img, alt: r.alt })),
+          defaultData.awards
+        ),
+        certifications: withFallback(
+          (cert.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, img: r.img, alt: r.alt, skills: r.skills })),
+          defaultData.certifications
+        ),
+        camps: withFallback(
+          (camp.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body, img: r.img, alt: r.alt, flip: r.flip })),
+          defaultData.camps
+        ),
+        languages: withFallback(
+          (lang.data ?? []).map((r) => ({ id: r.id as string, name: r.name, level: r.level, fill: r.fill })),
+          defaultData.languages
+        ),
       });
       setIsSupabase(!!supabase);
     } catch {

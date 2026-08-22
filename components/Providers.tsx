@@ -1,5 +1,6 @@
 "use client";
 
+import { MotionConfig } from "framer-motion";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { ResumeProvider } from "@/context/ResumeContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -14,15 +15,17 @@ function AdminSpacer() {
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <ResumeProvider>
-        <AdminBar />
-        <AdminSpacer />
-        <CustomCursor />
-        {children}
-        </ResumeProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <MotionConfig reducedMotion="user">
+      <ThemeProvider>
+        <AuthProvider>
+          <ResumeProvider>
+            <AdminBar />
+            <AdminSpacer />
+            <CustomCursor />
+            {children}
+          </ResumeProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </MotionConfig>
   );
 }
