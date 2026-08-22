@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Experience, Education, Project, Award, Certification, Camp, Language } from "@/lib/types";
+import { sortByRecency } from "@/lib/dateSort";
 import {
   DEFAULT_EXPERIENCES,
   DEFAULT_EDUCATION,
@@ -57,7 +58,20 @@ type ResumeContextType = ResumeData & {
   isSupabase: boolean;
 };
 
-const defaultData: ResumeData = {
+/** Order every dated section newest-first (by end date). Languages stay as authored. */
+function sortResumeData(d: ResumeData): ResumeData {
+  return {
+    experiences: sortByRecency(d.experiences, (x) => x.meta),
+    education: sortByRecency(d.education, (x) => x.meta),
+    projects: sortByRecency(d.projects, (x) => x.date),
+    awards: sortByRecency(d.awards, (x) => x.sub),
+    certifications: sortByRecency(d.certifications, (x) => x.meta),
+    camps: sortByRecency(d.camps, (x) => x.meta),
+    languages: d.languages,
+  };
+}
+
+const defaultData: ResumeData = sortResumeData({
   experiences: DEFAULT_EXPERIENCES.map((e, i) => ({ ...e, id: `static-exp-${i}` })),
   education: DEFAULT_EDUCATION.map((e, i) => ({ ...e, id: `static-edu-${i}` })),
   projects: DEFAULT_PROJECTS.map((p, i) => ({ ...p, id: `static-proj-${i}` })),
@@ -65,7 +79,7 @@ const defaultData: ResumeData = {
   certifications: DEFAULT_CERTIFICATIONS.map((c, i) => ({ ...c, id: `static-cert-${i}` })),
   camps: DEFAULT_CAMPS.map((c, i) => ({ ...c, id: `static-camp-${i}` })),
   languages: DEFAULT_LANGUAGES.map((l, i) => ({ ...l, id: `static-lang-${i}` })),
-};
+});
 
 const noop = async () => {};
 
@@ -110,17 +124,18 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
     }
     setLoading(true);
     try {
+      // sort_order desc as the base order so the newest-added row wins recency ties.
       const [exp, edu, proj, awd, cert, camp, lang] = await Promise.all([
-        supabase.from("experiences").select("*").order("sort_order", { ascending: true }),
-        supabase.from("education").select("*").order("sort_order", { ascending: true }),
-        supabase.from("projects").select("*").order("sort_order", { ascending: true }),
-        supabase.from("awards").select("*").order("sort_order", { ascending: true }),
-        supabase.from("certifications").select("*").order("sort_order", { ascending: true }),
-        supabase.from("camps").select("*").order("sort_order", { ascending: true }),
+        supabase.from("experiences").select("*").order("sort_order", { ascending: false }),
+        supabase.from("education").select("*").order("sort_order", { ascending: false }),
+        supabase.from("projects").select("*").order("sort_order", { ascending: false }),
+        supabase.from("awards").select("*").order("sort_order", { ascending: false }),
+        supabase.from("certifications").select("*").order("sort_order", { ascending: false }),
+        supabase.from("camps").select("*").order("sort_order", { ascending: false }),
         supabase.from("languages").select("*").order("sort_order", { ascending: true }),
       ]);
 
-      const mapProj = (r: Record<string, unknown>) => ({
+      const mapProj = (r: Record<string, unknown>): Project & { id: string } => ({
         id: r.id as string,
         title: r.title as string,
         date: (r.date as string) ?? null,
@@ -132,20 +147,38 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         ctaHref: (r.cta_href as string) ?? (r.ctaHref as string) ?? null,
       });
 
-      const certList = cert.data ?? [];
-      const certificationsMapped = certList.length > 0
-        ? certList.map((r) => ({ id: r.id, title: r.title, meta: r.meta, img: r.img, alt: r.alt, skills: r.skills }))
-        : DEFAULT_CERTIFICATIONS.map((c, idx) => ({ ...c, id: `default-cert-${idx}` }));
+      // Fall back to bundled defaults whenever a table is empty or errored, so a
+      // misconfigured / not-yet-seeded database never renders blank sections.
+      const withFallback = <T,>(rows: T[] | null | undefined, fallback: T[]): T[] =>
+        rows && rows.length > 0 ? rows : fallback;
 
-      setData({
-        experiences: (exp.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body })),
-        education: (edu.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body })),
-        projects: (proj.data ?? []).map((r) => mapProj(r)),
-        awards: (awd.data ?? []).map((r) => ({ id: r.id, title: r.title, sub: r.sub, img: r.img, alt: r.alt })),
-        certifications: certificationsMapped,
-        camps: (camp.data ?? []).map((r) => ({ id: r.id, title: r.title, meta: r.meta, body: r.body, img: r.img, alt: r.alt, flip: r.flip })),
-        languages: (lang.data ?? []).map((r) => ({ id: r.id, name: r.name, level: r.level, fill: r.fill })),
-      });
+      setData(sortResumeData({
+        experiences: withFallback(
+          (exp.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body })),
+          defaultData.experiences
+        ),
+        education: withFallback(
+          (edu.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body })),
+          defaultData.education
+        ),
+        projects: withFallback((proj.data ?? []).map((r) => mapProj(r)), defaultData.projects),
+        awards: withFallback(
+          (awd.data ?? []).map((r) => ({ id: r.id as string, title: r.title, sub: r.sub, img: r.img, alt: r.alt })),
+          defaultData.awards
+        ),
+        certifications: withFallback(
+          (cert.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, img: r.img, alt: r.alt, skills: r.skills })),
+          defaultData.certifications
+        ),
+        camps: withFallback(
+          (camp.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body, img: r.img, alt: r.alt, flip: r.flip })),
+          defaultData.camps
+        ),
+        languages: withFallback(
+          (lang.data ?? []).map((r) => ({ id: r.id as string, name: r.name, level: r.level, fill: r.fill })),
+          defaultData.languages
+        ),
+      }));
       setIsSupabase(!!supabase);
     } catch {
       setData(defaultData);

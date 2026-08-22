@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Syne } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { Analytics } from "@vercel/analytics/next";
@@ -7,16 +7,29 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const SITE_URL = "https://sohamsharma.info";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-dm-sans",
+// Self-hosted variable fonts (latin) — no build-time Google Fonts dependency.
+const hanken = localFont({
+  src: "./fonts/HankenGrotesk-Variable.woff2",
+  variable: "--font-hanken",
   display: "swap",
+  weight: "100 900",
+  fallback: ["system-ui", "sans-serif"],
 });
 
-const syne = Syne({
-  subsets: ["latin"],
-  variable: "--font-syne",
+const fraunces = localFont({
+  src: "./fonts/Fraunces-Variable.woff2",
+  variable: "--font-fraunces",
   display: "swap",
+  weight: "100 900",
+  fallback: ["Georgia", "serif"],
+});
+
+const jetbrainsMono = localFont({
+  src: "./fonts/JetBrainsMono-Variable.woff2",
+  variable: "--font-jetbrains",
+  display: "swap",
+  weight: "100 800",
+  fallback: ["ui-monospace", "monospace"],
 });
 
 const title = "Soham Sharma — Portfolio | CS Student, Conrad Innovator";
@@ -119,7 +132,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${syne.variable}`} data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className={`${hanken.variable} ${fraunces.variable} ${jetbrainsMono.variable}`} data-theme="dark" suppressHydrationWarning>
       <body className="font-sans">
         <script
           type="application/ld+json"

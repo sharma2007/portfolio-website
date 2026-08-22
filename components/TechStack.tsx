@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { useTheme } from "@/context/ThemeContext";
+import SectionHeading from "./SectionHeading";
 
 const STACK = [
   {
@@ -122,29 +122,21 @@ export default function TechStack() {
 
   let staggerIndex = 0;
   return (
-    <motion.section
-      ref={sectionRef}
-      id="tech-stack"
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5 }}
-      className="mb-24 scroll-mt-24"
-    >
-      <h2 className="font-display font-bold text-3xl sm:text-4xl text-text mb-4 tracking-tight">
-        Tech Stack
-      </h2>
-      <p className="text-muted text-lg mb-6">
-        The toolkit behind the projects above.
-      </p>
+    <section ref={sectionRef} id="tech-stack" className="mb-28 scroll-mt-24">
+      <SectionHeading
+        index="04 / TOOLKIT"
+        title="Tech Stack"
+        subtitle="The languages, frameworks, and infrastructure behind the projects above."
+      />
 
-      <div className="space-y-6">
+      <div className="grid sm:grid-cols-2 gap-4">
         {STACK.map((group) => (
-          <div key={group.category}>
-            <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">
+          <div key={group.category} className="rounded-2xl border border-line bg-surface p-6 shadow-card">
+            <h3 className="kicker text-muted mb-5 flex items-center gap-2">
+              <span className="inline-block h-px w-4 bg-accent" />
               {group.category}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
               {group.items.map((item) => (
                 <div
                   key={item.name}
@@ -166,6 +158,6 @@ export default function TechStack() {
           </div>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }

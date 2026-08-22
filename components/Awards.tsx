@@ -8,6 +8,8 @@ import { useAuth } from "@/context/AuthContext";
 import type { Award } from "@/lib/types";
 import AdminButtons from "./AdminButtons";
 import Modal from "./Modal";
+import SectionHeading from "./SectionHeading";
+import { isLocalImage } from "@/lib/images";
 
 export default function Awards() {
   const { isAdmin } = useAuth();
@@ -16,47 +18,44 @@ export default function Awards() {
   const canEdit = isAdmin && isSupabase;
 
   return (
-    <motion.section
-      id="awards"
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5 }}
-      className="mb-24 scroll-mt-24"
-    >
-      <div className="flex items-center justify-between gap-4 mb-12">
-        <h2 className="font-display font-bold text-3xl sm:text-4xl text-text tracking-tight">Awards</h2>
-        {canEdit && (
-          <button type="button" onClick={() => setModal({ open: true, item: null })} className="text-sm px-3 py-1.5 rounded-lg bg-accent/20 text-accent hover:bg-accent/30 transition-all duration-300">
-            + Add
-          </button>
-        )}
-      </div>
+    <section id="awards" className="mb-28 scroll-mt-24">
+      <SectionHeading
+        index="05 / RECOGNITION"
+        title="Awards"
+        subtitle="Competitions, honors, and distinctions across CS, mathematics, and robotics."
+        action={
+          canEdit ? (
+            <button type="button" onClick={() => setModal({ open: true, item: null })} className="shrink-0 text-sm px-3 py-1.5 rounded-lg bg-accent/20 text-accent hover:bg-accent/30 transition-colors">
+              + Add
+            </button>
+          ) : undefined
+        }
+      />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {awards.map((award, i) => (
           <motion.div
             key={award.id}
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-40px" }}
             transition={{ delay: i * 0.04, duration: 0.4 }}
-            className="group relative rounded-2xl overflow-hidden border border-white/10 bg-surface hover:border-amber-400/30 transition-all duration-300"
+            className="group relative rounded-2xl overflow-hidden border border-line bg-surface hover:border-gold/40 transition-colors shadow-card"
           >
-            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-amber-400/5 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-gold/10 to-transparent pointer-events-none z-10" />
             {canEdit && (
-              <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="absolute top-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
                 <AdminButtons
                   onEdit={() => setModal({ open: true, item: award })}
                   onDelete={() => window.confirm("Delete this award?") && deleteAward(award.id)}
                 />
               </div>
             )}
-            <div className="aspect-[4/3] relative">
-              <Image src={award.img} alt={award.alt} fill className="object-cover" unoptimized />
+            <div className="aspect-[4/3] relative border-b border-line">
+              <Image src={award.img} alt={award.alt} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1280px) 33vw, 25vw" unoptimized={!isLocalImage(award.img)} />
             </div>
             <div className="p-5">
-              <h3 className="font-display font-semibold text-text">{award.title}</h3>
-              <p className="text-muted text-sm mt-1" title={award.sub}>{award.sub}</p>
+              <h3 className="font-display font-semibold text-text leading-snug">{award.title}</h3>
+              <p className="text-muted text-sm mt-1.5" title={award.sub}>{award.sub}</p>
             </div>
           </motion.div>
         ))}
@@ -73,7 +72,7 @@ export default function Awards() {
           onCancel={() => setModal({ open: false, item: null })}
         />
       </Modal>
-    </motion.section>
+    </section>
   );
 }
 
@@ -85,13 +84,13 @@ function AwardForm({ item, onSave, onCancel }: { item: (Award & { id: string }) 
   const [saving, setSaving] = useState(false);
   return (
     <form onSubmit={async (e) => { e.preventDefault(); setSaving(true); await onSave({ title, sub, img, alt }); setSaving(false); }} className="space-y-4">
-      <div><label className="block text-sm font-medium text-text mb-1">Title</label><input value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
-      <div><label className="block text-sm font-medium text-text mb-1">Subtitle / description</label><input value={sub} onChange={(e) => setSub(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
-      <div><label className="block text-sm font-medium text-text mb-1">Image URL</label><input value={img} onChange={(e) => setImg(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" placeholder="/images/awards/..." /></div>
-      <div><label className="block text-sm font-medium text-text mb-1">Alt text</label><input value={alt} onChange={(e) => setAlt(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-white/10 text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Title</label><input value={title} onChange={(e) => setTitle(e.target.value)} required className="w-full px-3 py-2 rounded-lg bg-surface border border-line text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Subtitle / description</label><input value={sub} onChange={(e) => setSub(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-line text-text" /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Image URL</label><input value={img} onChange={(e) => setImg(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-line text-text" placeholder="/images/awards/..." /></div>
+      <div><label className="block text-sm font-medium text-text mb-1">Alt text</label><input value={alt} onChange={(e) => setAlt(e.target.value)} className="w-full px-3 py-2 rounded-lg bg-surface border border-line text-text" /></div>
       <div className="flex gap-2 justify-end">
-        <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg border border-white/20 text-text hover:bg-white/5 transition-all duration-300">Cancel</button>
-        <button type="submit" disabled={saving} className="px-4 py-2 rounded-lg bg-accent text-bg hover:bg-accent/90 disabled:opacity-50 transition-all duration-300">{saving ? "Saving..." : "Save"}</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg border border-line text-text hover:bg-white/5 transition-colors">Cancel</button>
+        <button type="submit" disabled={saving} className="btn-primary px-4 py-2 rounded-lg font-medium disabled:opacity-50">{saving ? "Saving..." : "Save"}</button>
       </div>
     </form>
   );

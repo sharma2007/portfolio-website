@@ -9,22 +9,31 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-syne)", "var(--font-dm-sans)", "sans-serif"],
+        sans: ["var(--font-hanken)", "system-ui", "sans-serif"],
+        display: ["var(--font-fraunces)", "Georgia", "serif"],
+        mono: ["var(--font-jetbrains)", "ui-monospace", "monospace"],
       },
       colors: {
         bg: "var(--color-bg)",
         surface: "var(--color-surface)",
+        surface2: "var(--color-surface-2)",
         text: "var(--color-text)",
         muted: "var(--color-muted)",
+        line: "var(--color-line)",
         accent: "var(--color-accent)",
         accentDim: "var(--color-accent-dim)",
+        gold: "var(--color-gold)",
         timelineLine: "var(--color-timeline-line)",
         cursorRing: "var(--color-cursor-ring)",
+      },
+      boxShadow: {
+        card: "0 1px 0 0 var(--color-line), 0 20px 40px -24px rgba(0,0,0,0.6)",
       },
       animation: {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         float: "float 4s ease-in-out infinite",
+        marquee: "marquee 40s linear infinite",
+        blink: "blink 1.1s step-end infinite",
       },
       keyframes: {
         "glow-pulse": {
@@ -35,9 +44,14 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },
         },
-      },
-      backgroundImage: {
-        grain: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        blink: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
+        },
       },
     },
   },

@@ -1,106 +1,64 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { IconLinkedIn, IconGitHub } from "./Icons";
+import SectionHeading from "./SectionHeading";
+import { IconMail, IconLinkedIn, IconGitHub } from "./Icons";
 
 const STATS = [
-  "200+ students mentored",
-  "$2,000+ raised",
-  "UAE Rank #3",
-  "5+ Major Projects",
+  { value: "200+", label: "students mentored" },
+  { value: "$2,000+", label: "raised for non-profits" },
+  { value: "#3", label: "National IOI Qualifier, UAE" },
+  { value: "5+", label: "major engineering projects" },
 ];
+
+const EMAIL = "sharmasoham2007@gmail.com";
 
 export default function About() {
   return (
-    <motion.section
-      id="about"
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5 }}
-      className="mb-24 scroll-mt-24"
-    >
-      <h2 className="font-display font-bold text-3xl sm:text-4xl text-text mb-4 tracking-tight">
-        About Me
-      </h2>
+    <section id="about" className="mb-28 scroll-mt-24">
+      <SectionHeading index="01 / PROFILE" title="About" />
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="mb-8 py-4 px-6 rounded-xl bg-surface border border-white/5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted"
-      >
-        {STATS.map((stat, i) => (
-          <span key={stat} className="flex items-center gap-2">
-            <span className="text-accent font-medium">{stat}</span>
-            {i < STATS.length - 1 && <span className="text-white/20">·</span>}
-          </span>
-        ))}
-      </motion.div>
-
-      <div className="grid md:grid-cols-5 gap-10">
+      <div className="grid lg:grid-cols-5 gap-10 lg:gap-14">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="md:col-span-2"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5 }}
+          className="lg:col-span-3"
         >
-          <dl className="space-y-4 text-base">
-            <div>
-              <dt className="font-semibold text-text">Name</dt>
-              <dd className="text-muted">Soham Sharma</dd>
-            </div>
-            <div>
-              <dt className="font-semibold text-text">Email</dt>
-              <dd>
-                <a
-                  href="mailto:sharmasoham2007@gmail.com"
-                  className="text-accent hover:underline transition-all duration-300"
-                >
-                  sharmasoham2007@gmail.com
-                </a>
-              </dd>
-            </div>
-          </dl>
-          <div className="flex gap-3 mt-6">
-            <a
-              href="https://linkedin.com/in/ssharma25"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 transition-all duration-300 cta-glow"
-            >
-              <IconLinkedIn size="lg" />
-            </a>
-            <a
-              href="https://github.com/sharma2007"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface border border-white/10 text-text hover:text-accent hover:border-accent/50 transition-all duration-300 cta-glow"
-            >
-              <IconGitHub size="lg" />
-            </a>
+          <p className="text-xl sm:text-2xl leading-relaxed text-text font-display">
+            A passion-driven freshman studying Computer Science at HKUST.
+          </p>
+          <p className="text-lg leading-relaxed text-muted mt-5">
+            I won regionals and finished runner-up at FLL UAE by building a YOLOv8 model to detect
+            Leading Edge Erosion, and prototyped concert armbands tracking health vitals and location.
+            As a Conrad Innovator, I built software to encrypt data through a homomorphic, lattice-based
+            encryptor. Currently building <span className="text-text">OurThing</span> — an app to find and
+            announce free goodie events university-wide.
+          </p>
+
+          <div className="flex gap-3 mt-8">
+            <a href={`mailto:${EMAIL}`} aria-label="Email" className="flex h-11 w-11 items-center justify-center rounded-full bg-surface border border-line text-text hover:text-accent hover:border-accent/50 cta-glow"><IconMail /></a>
+            <a href="https://linkedin.com/in/ssharma25" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="flex h-11 w-11 items-center justify-center rounded-full bg-surface border border-line text-text hover:text-accent hover:border-accent/50 cta-glow"><IconLinkedIn size="lg" /></a>
+            <a href="https://github.com/sharma2007" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="flex h-11 w-11 items-center justify-center rounded-full bg-surface border border-line text-text hover:text-accent hover:border-accent/50 cta-glow"><IconGitHub size="lg" /></a>
           </div>
         </motion.div>
+
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="md:col-span-3"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="lg:col-span-2 grid grid-cols-2 gap-px bg-line rounded-2xl overflow-hidden border border-line"
         >
-          <p className="text-lg leading-relaxed text-muted">
-            I&apos;m a passion-driven freshman pursuing my degree in Computer Science at HKUST.
-            I&apos;ve won the regionals and came runner up in FLL UAE by creating an AI model to
-            detect Leading Edge Erosion using YOLOv8, and prototyped arm bands for
-            concerts—tracking health vitals and location. Conrad Innovator Awardee, worked on
-            software to encrypt data through a homomorphic lattice-based encryptor.
-            Working on OurThing—an app to find and announce free goodie events university wide.
-          </p>
+          {STATS.map((s) => (
+            <div key={s.label} className="bg-surface p-6 flex flex-col justify-center">
+              <span className="font-display font-bold text-3xl text-accent">{s.value}</span>
+              <span className="text-muted text-sm mt-1.5 leading-snug">{s.label}</span>
+            </div>
+          ))}
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 }
