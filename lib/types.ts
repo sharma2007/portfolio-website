@@ -1,5 +1,21 @@
-export type Experience = { id?: string; title: string; meta: string; body: string; sort_order?: number };
-export type Education = { id?: string; title: string; meta: string; body: string; sort_order?: number };
+export type Experience = {
+  id?: string;
+  title: string;
+  meta: string;
+  body: string;
+  sort_order?: number;
+  cta?: string | null;
+  ctaHref?: string | null;
+};
+export type Education = {
+  id?: string;
+  title: string;
+  meta: string;
+  body: string;
+  sort_order?: number;
+  cta?: string | null;
+  ctaHref?: string | null;
+};
 export type Project = {
   id?: string;
   title: string;

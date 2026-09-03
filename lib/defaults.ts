@@ -10,6 +10,8 @@ export const DEFAULT_EXPERIENCES: Experience[] = [
       "Integrated a VLM patrol pipeline via a Redis pose bridge and RTSP video relay.",
       "Set up Gazebo + Docker simulation and a multi-machine CycloneDDS deployment for hardware-free testing.",
     ].join("\n"),
+    cta: "Letter of Recommendation",
+    ctaHref: "/carryai-lor.pdf",
   },
   {
     title: "Development Intern",

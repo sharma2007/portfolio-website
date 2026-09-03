@@ -58,6 +58,23 @@ type ResumeContextType = ResumeData & {
   isSupabase: boolean;
 };
 
+/** Keep bundled CTAs (e.g. CarryAI LOR) when live rows have no link of their own. */
+function attachDefaultCtas<T extends { title: string; meta: string; cta?: string | null; ctaHref?: string | null }>(
+  items: T[],
+  defaults: { title: string; meta: string; cta?: string | null; ctaHref?: string | null }[]
+): T[] {
+  return items.map((item) => {
+    if (item.ctaHref) return item;
+    const match = defaults.find(
+      (d) =>
+        d.ctaHref &&
+        (d.title === item.title ||
+          (/carryai/i.test(item.meta) && /carryai/i.test(d.meta)))
+    );
+    return match ? { ...item, cta: match.cta ?? null, ctaHref: match.ctaHref ?? null } : item;
+  });
+}
+
 /** Order every dated section newest-first (by end date). Languages stay as authored. */
 function sortResumeData(d: ResumeData): ResumeData {
   return {
@@ -154,7 +171,17 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
 
       setData(sortResumeData({
         experiences: withFallback(
-          (exp.data ?? []).map((r) => ({ id: r.id as string, title: r.title, meta: r.meta, body: r.body })),
+          attachDefaultCtas(
+            (exp.data ?? []).map((r) => ({
+              id: r.id as string,
+              title: r.title as string,
+              meta: r.meta as string,
+              body: r.body as string,
+              cta: (r.cta as string) ?? null,
+              ctaHref: (r.cta_href as string) ?? (r.ctaHref as string) ?? null,
+            })),
+            DEFAULT_EXPERIENCES
+          ),
           defaultData.experiences
         ),
         education: withFallback(

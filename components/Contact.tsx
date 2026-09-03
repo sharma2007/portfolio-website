@@ -37,7 +37,7 @@ export default function Contact() {
           Let&apos;s build something.
         </h2>
         <p className="text-muted text-lg mt-5 max-w-xl">
-          Open to internships and collaborations. The fastest way to reach me is email — I usually reply within a day.
+          Open to internships and collaborations. The fastest way to reach me is email.
         </p>
 
         <div className="mt-9 flex flex-wrap items-center gap-3">

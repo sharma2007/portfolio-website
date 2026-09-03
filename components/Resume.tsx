@@ -8,7 +8,7 @@ import type { Experience, Education } from "@/lib/types";
 import AdminButtons from "./AdminButtons";
 import Modal from "./Modal";
 import SectionHeading from "./SectionHeading";
-import { IconDownload } from "./Icons";
+import { IconArrowUpRight, IconDownload } from "./Icons";
 
 export default function Resume() {
   const { isAdmin } = useAuth();
@@ -139,7 +139,7 @@ function Timeline({
   void hideAdd;
   return (
     <div className="relative pl-8 sm:pl-10">
-      <div className="absolute left-[7px] sm:left-[9px] top-1 bottom-1 w-px bg-timelineLine" />
+      <div className="absolute left-2 top-1 bottom-1 w-px -translate-x-1/2 bg-timelineLine" />
       <div className="space-y-6">
         {items.map((item, i) => (
           <motion.div
@@ -150,8 +150,12 @@ function Timeline({
             transition={{ duration: 0.4, delay: i * 0.05 }}
             className="relative group"
           >
-            <span className="absolute -left-8 sm:-left-10 top-6 w-4 h-4 rounded-full bg-bg border-2 border-accent" />
-            <span className="absolute -left-[26px] sm:-left-[31px] top-[30px] w-2 h-2 rounded-full bg-accent" />
+            <span
+              aria-hidden
+              className="absolute -left-8 sm:-left-10 top-6 flex h-4 w-4 items-center justify-center rounded-full border-2 border-accent bg-bg"
+            >
+              <span className="block h-1.5 w-1.5 rounded-full bg-accent" />
+            </span>
             <div className="rounded-2xl border border-line bg-surface p-6 hover:border-accent/30 transition-colors shadow-card">
               {canEdit && (
                 <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -161,6 +165,16 @@ function Timeline({
               <h4 className="font-display font-semibold text-lg text-text pr-16">{item.title}</h4>
               <p className="font-mono text-xs text-accent mt-1.5">{item.meta}</p>
               <TimelineBody text={item.body} />
+              {item.cta && item.ctaHref && (
+                <a
+                  href={item.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:gap-2.5 transition-all"
+                >
+                  {item.cta} <IconArrowUpRight />
+                </a>
+              )}
             </div>
           </motion.div>
         ))}
