@@ -59,10 +59,10 @@ type ResumeContextType = ResumeData & {
 };
 
 /** Keep bundled CTAs (e.g. CarryAI LOR) when live rows have no link of their own. */
-function attachDefaultCtas<T extends { title: string; meta: string; cta?: string | null; ctaHref?: string | null }>(
-  items: T[],
-  defaults: { title: string; meta: string; cta?: string | null; ctaHref?: string | null }[]
-): T[] {
+function attachDefaultCtas(
+  items: (Experience & { id: string })[],
+  defaults: Experience[]
+): (Experience & { id: string })[] {
   return items.map((item) => {
     if (item.ctaHref) return item;
     const match = defaults.find(
@@ -172,13 +172,13 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
       setData(sortResumeData({
         experiences: withFallback(
           attachDefaultCtas(
-            (exp.data ?? []).map((r) => ({
+            (exp.data ?? []).map((r): Experience & { id: string } => ({
               id: r.id as string,
               title: r.title as string,
               meta: r.meta as string,
               body: r.body as string,
-              cta: (r.cta as string) ?? null,
-              ctaHref: (r.cta_href as string) ?? (r.ctaHref as string) ?? null,
+              cta: (r.cta as string | null | undefined) ?? null,
+              ctaHref: (r.cta_href as string | null | undefined) ?? (r.ctaHref as string | null | undefined) ?? null,
             })),
             DEFAULT_EXPERIENCES
           ),
